@@ -1,0 +1,62 @@
+# Nexus Framework
+
+> File này được Antigravity tự động đọc mỗi phiên làm việc.
+
+Dự án này sử dụng **Nexus Framework v3.1** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
+
+## Chế độ Song ngữ
+- Giao tiếp với tôi bằng **tiếng Việt**
+- Code, commit messages, tên biến/hàm → **tiếng Anh**
+
+## Vòng đời Workflow
+Luôn tuân theo chu trình Nexus:
+1. `/init` → Khởi tạo dự án
+2. `/design [phase]` → Thiết kế UI/UX (3 stages: Foundation → Screens → Components)
+3. `/plan [phase]` → Lập kế hoạch phase
+4. `/execute [phase]` → Thực thi kế hoạch
+5. `/verify [phase]` → Xác minh kết quả
+6. `/review [scope]` → Kiểm tra chất lượng
+7. `/audit [scope]` → Kiểm tra toàn diện (security, code, accessibility)
+8. `/quick` → Xử lý tác vụ nhanh
+9. `/progress` → Xem tiến độ
+10. `/guide` → Hướng dẫn bước tiếp theo
+11. `/health` → Kiểm tra sức khỏe framework
+12. `/start` → Khởi đầu phiên làm việc
+13. `/end` → Kết thúc phiên làm việc
+14. `/learn` → Extract patterns từ session vào reasoning-bank
+15. `/evolve` → Cluster patterns → suggest skill amendments
+
+## Quy tắc Bắt buộc
+1. **Ghi log đúng FORMAT** → `.agent/maintenance/usage-logger.md`
+2. **Luôn hiện guide** sau mỗi workflow
+3. **Không bỏ qua verification** — mọi task có bước `<verify>`
+4. **Atomic commits** — conventional format
+5. **Phần mềm tiếng Việt** — Nội dung người dùng cuối phải tiếng Việt
+6. **Forward slash** — `C:/Users/...` không bao giờ `C:\Users\...`
+7. **Evidence before claims (v2.0)** — Đọc `evidence-first.md`
+8. **Check skills before tasks (v2.0)** — Đọc `skill-enforcement.md`
+9. **Claim Audit before done (v2.1)** — Evidence table (CONFIRMED/UNCONFIRMED/CONTRADICTED)
+10. **Scope Guard (v2.1)** — git diff vs plan sau mỗi wave
+11. **Critical functions (v2.1)** — Nếu `.nexus/critical-functions.md` tồn tại → đọc trước khi edit
+
+## Trạng thái Dự án
+- `.nexus/state.md` — ĐỌC ĐẦU TIÊN mỗi phiên làm việc
+- `.nexus/roadmap.md` — cấu trúc phase và tiến độ
+- `.nexus/project.md` — tầm nhìn, tech stack, quyết định
+- `.nexus/requirements.md` — yêu cầu đã phạm vi hóa
+
+## Framework
+- `.agent/workflows/` — 15 workflow definitions
+- `.agent/skills/` — 116 skills thuộc 14 danh mục (Antigravity auto-discover)
+- `.agent/agents/` — 6 agents + 13 shared protocols
+- `.agent/orchestration/` — Orchestrator và memory schema
+- `.agent/maintenance/` — Usage logging và self-learning
+- `.agent/templates/` — Project file templates (10)
+
+## MCP Tích hợp
+
+| MCP Server | Mục đích |
+|-----------|---------|
+| **Serena** | Memory liên agent, symbolic code analysis |
+| **Context7** | Tra cứu docs thư viện, API reference mới nhất |
+| **Pencil** | Vector design trong IDE, design↔code sync, .pen files |

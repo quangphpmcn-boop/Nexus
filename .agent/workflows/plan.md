@@ -1,0 +1,189 @@
+---
+description: Lập kế hoạch phase — tạo kế hoạch thực thi nguyên tử với cấu trúc XML
+---
+
+# /nexus:plan [phase_number] — Phase Planning
+
+## Prerequisites
+- Read `.nexus/state.md` → confirm current position
+- Read `.nexus/roadmap.md` → get phase requirements
+- Read `.nexus/requirements.md` → get full requirement details
+- Read `.agent/agents/_shared/bilingual-protocol.md` → language rules
+- Read `.agent/agents/_shared/behavioral-rules.md` → file discipline, security, quality rules
+- Read `.agent/agents/_shared/memory-protocol.md` → memory read/write rules
+- Read `.nexus/phases/phase-{N}/design/design-brief.md` (if exists) → incorporate design specs
+- Read `.agent/agents/_shared/mcp-protocol.md` → use Context7 for library API lookup
+- Read `.nexus/memory/reasoning-bank.json` (if exists) → check similar patterns for approach suggestions
+
+## Steps
+
+### Step 1: Research Phase Scope
+Understand what this phase needs to deliver:
+- Which requirements (REQ-xxx) map to this phase
+- What exists already (if building on previous phases)
+- Dependencies on external systems or prior work
+
+### Step 1.3: Context7 Lookup (BẮT BUỘC nếu dùng thư viện ngoài)
+
+Scan requirements và tech stack cho phase này:
+1. Xác định thư viện/framework bên ngoài sẽ dùng trong phase
+2. **Nếu có thư viện ngoài** → gọi `resolve-library-id` + `query-docs` để verify API patterns trước khi tạo plan
+3. **Ưu tiên tra cứu khi**: API phức tạp, version-specific behavior, plugin ít phổ biến
+4. **Được bỏ qua khi**: logic nghiệp vụ nội bộ thuần, không dùng thư viện
+
+> Kết quả tra cứu dùng để plan chính xác hơn — tránh plan sai API signatures.
+
+### Step 1.5: Implementation Choices (Elicitation)
+
+Read `_shared/requirements-elicitation.md` → apply **Loại 2: Implementation Choice**.
+Với các quyết định lớn (framework, thư viện, kiến trúc) → dùng **Multi-Option Comparison Format** (Rule 7).
+
+1. Với mỗi requirement thuộc phase → xác định các quyết định AI phải tự quyết nếu user không nói rõ
+2. Trình bày dạng bảng để user duyệt (hoặc user tự chỉ định)
+3. Ghi kết quả vào `requirements.md` → section "Detail Decisions"
+
+> CRITICAL: AI KHÔNG ĐƯỢC bỏ qua bước này. Nếu thông tin chưa rõ → hỏi lại, KHÔNG tự đoán.
+
+### Step 2: Break into Plans
+Each plan = one atomic unit of work:
+- Can be executed independently
+- Has clear definition of done
+- Takes 10-30 minutes to execute
+- One plan = one focused deliverable
+- **Mỗi task PHẢI liệt kê exact file paths** sẽ tạo mới hoặc sửa đổi (giúp executor biết rõ scope, giảm ambiguity)
+
+Rules:
+- Plan MUST use XML structure from `.agent/templates/plan.md`
+- Plans in same wave = can run in parallel (no dependencies)
+- Plans across waves = sequential (wave 1 before wave 2)
+- Maximum 3-5 plans per phase
+
+**Resource Planning** — mỗi plan PHẢI khai báo `<resources>`:
+- `<agents>`: agents dự kiến (executor, debugger, reviewer...)
+- `<skills>`: domain skills cần thiết (frontend, database, testing...)
+- `<mcp>`: MCP tools cần dùng (Context7 tra API, Serena symbolic analysis, Pencil design trong .pen...)
+
+> Tham khảo danh sách agents tại `.agent/agents/`, skills tại `.agent/skills/SKILL-INDEX.md`, MCP tại `_shared/mcp-protocol.md`.
+
+### Step 3: Assign Waves (with Dependencies)
+Group plans by dependencies, sử dụng `depends_on` attribute:
+
+```
+Wave 1 (depends_on: none):  [Plans with no dependencies]      → Parallel
+Wave 2 (depends_on: wave-1): [Plans depending on Wave 1]      → Parallel
+Wave 3 (depends_on: wave-2): [Plans depending on Wave 2]      → Sequential
+```
+
+Trong `wave-structure.md`, ghi rõ dependency:
+```markdown
+# Wave Structure — Phase {N}
+
+## Wave 1 (depends_on: none)
+- Plan 1: [name] — [brief description]
+- Plan 2: [name] — [brief description]
+
+## Wave 2 (depends_on: wave-1)
+- Plan 3: [name] — [brief description]
+
+## Wave 3 (depends_on: wave-2)
+- Verify: integration testing
+```
+
+> **Backward-compatible:** Nếu `depends_on` không ghi → mặc định sequential ordering (wave 1 → 2 → 3).
+
+### Step 4: Plan Check (if `workflow.plan_check` is true)
+Invoke Reviewer agent to verify:
+- [ ] Every requirement has at least one plan covering it
+- [ ] No plan is too large (> 5 tasks = split it)
+- [ ] No circular dependencies between plans
+- [ ] Verification steps defined for each plan
+- [ ] Reasoning-bank patterns considered
+
+### Step 4.5: Quick Challenge (Opt-in — v2.1)
+
+> Inspired by Rune `adversary`. Pre-implementation red-team nhẹ.
+
+**Khi nào chạy** (CHỈ 1 trong các điều kiện sau):
+- Phase có requirements liên quan: auth, crypto, payment, data migration
+- User yêu cầu rõ ràng: "chạy adversary check cho plan" hoặc tương tự
+- Plan ảnh hưởng > 10 files hoặc > 3 services
+
+**KHÔNG chạy**: cho phases UI-only, documentation, config changes.
+
+**Nếu trigger → challenge trên 3 chiều:**
+
+1. **Edge Cases** (2 phút):
+   - Empty/zero/null inputs cho mỗi feature trong plan?
+   - Race conditions nếu concurrent operations?
+   - Partial failure — step 3/5 fail thì rollback thế nào?
+
+2. **Security** (2 phút):
+   - Input trust boundaries — plan có specify validation?
+   - Auth gaps — unprotected routes/actions?
+   - Data exposure — API responses có leak sensitive fields?
+
+3. **Integration Risk** (2 phút):
+   - Breaking changes — shared interfaces bị ảnh hưởng?
+   - Migration gaps — DB migration có reversible?
+   - Test invalidation — existing tests sẽ break?
+
+**Output** (max 5 findings):
+```
+### Quick Challenge — [Phase Name]
+- Findings: [N] | Verdict: PROCEED / HARDEN
+| # | Dimension | Finding | Severity | Remediation |
+|---|-----------|---------|----------|-------------|
+| 1 | Security | No auth on /api/export | HIGH | Add auth middleware |
+```
+
+**Verdict**:
+- ANY CRITICAL → **HARDEN** (thêm remediation vào plan trước khi execute)
+- Chỉ MEDIUM/LOW → **PROCEED** (ghi notes cho implementation)
+- **KHÔNG CÓ REVISE** — Quick Challenge advisory, không block
+
+### Step 5: User Approval
+Present plan summary to user (in `user_language`):
+- Plan count + wave structure
+- Estimated effort
+- Ask for approval before execution
+
+### Step 6: Save Plans
+Save to `.nexus/phases/phase-{N}/`:
+```
+phase-{N}/
+├── phase-{N}-1-PLAN.md
+├── phase-{N}-2-PLAN.md
+├── phase-{N}-3-PLAN.md
+└── wave-structure.md
+```
+
+**Memory write** — ghi `.nexus/memory/task-board.md` theo schema từ `memory-schema.md`:
+```markdown
+# Task Board — Phase {N}
+
+## Wave 1
+- [ ] Plan 1: [name] — ⬚ Waiting
+- [ ] Plan 2: [name] — ⬚ Waiting
+
+## Wave 2
+- [ ] Plan 3: [name] — ⬚ Waiting (depends on Wave 1)
+```
+
+→ Track: `Memory: write: memory/task-board.md`
+
+### Step 6.5: Finalize Usage Log (BẮT BUỘC)
+
+Ghi vào `.nexus/logs/usage-log.md`.
+
+> **Format**: Theo ĐÚNG format trong `.agent/maintenance/usage-logger.md`.
+> **Self-check**: 6 fields bảng? Bảng Chi tiết? Không prose? Skills ≠ "nexus"?
+
+### Step 7: Guide → Next Steps
+Invoke `guide.md`:
+- Suggest `/nexus:execute [phase]` to start execution
+- Show wave structure overview
+
+## Output
+- All plans saved as XML-structured markdown
+- Wave dependencies documented
+- User approved and knows next step
