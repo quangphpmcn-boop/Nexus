@@ -65,7 +65,7 @@ From `nexus.json → agents.turn_limits`:
 | Agent | Default Domain Skills | Conditional Skills |
 |-------|-----------------------|-------------------|
 | **architect** | `architecture` | `domain-driven-design`, `microservices-patterns`, `brainstorming` |
-| **designer** | `ui-ux-pro-max` | `tailwind-design-system`, `react-patterns`, `flutter-expert` |
+| **designer** | `design-taste` | `design-redesign`, `design-minimalist`, `tailwind-design-system`, `react-patterns` |
 | **planner** | `writing-plans` | `concise-planning`, `executing-plans` |
 | **executor** | *suy luận từ tech stack* | Xem `SKILL-INDEX.md` → Quick Lookup |
 | **reviewer** | `code-reviewer`, `clean-code` | `security-auditor`, `wcag-audit-patterns`, `testing-patterns` |

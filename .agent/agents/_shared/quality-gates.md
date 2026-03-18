@@ -7,7 +7,7 @@ Before planning a phase with UI (3-stage design process):
 
 **Stage 1 — Foundation** (1 lần per project):
 - [ ] Context analysis completed (domain, audience, mood keywords)
-- [ ] Design system tokens defined via ui-ux-pro-max (colors, typography, spacing)
+- [ ] Design system tokens defined via design-taste (colors, typography, spacing)
 - [ ] Brand guide created (visual principles, do's & don'ts)
 - [ ] Anti-repetition check passed (differs from previous projects)
 - [ ] User has approved Foundation

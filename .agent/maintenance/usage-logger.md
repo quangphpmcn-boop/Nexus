@@ -151,7 +151,7 @@ AI detect usage bằng cách tự ghi nhớ trong session:
 | Workflow | Luôn ghi | Ghi thêm nếu liên quan |
 |----------|----------|------------------------|
 | `/init` | `architecture` | `brainstorming`, `domain-driven-design` |
-| `/design` | `ui-ux-pro-max` | `tailwind-design-system`, `react-patterns`, `flutter-expert` |
+| `/design` | `design-taste` | `tailwind-design-system`, `react-patterns`, `flutter-expert` |
 | `/plan` | `writing-plans` | `concise-planning`, `executing-plans` |
 | `/execute` | *suy luận từ tech stack* | xem bảng Tech Stack Mapping bên dưới |
 | `/verify` | `verification-before-completion` | `testing-patterns`, `e2e-testing` |
@@ -177,14 +177,14 @@ AI detect usage bằng cách tự ghi nhớ trong session:
 | CSS / Tailwind | `tailwind-design-system` |
 | Security / Auth | `auth-implementation-patterns`, `security-auditor` |
 | Testing | `test-driven-development`, `testing-patterns` |
-| Design system / UI | `ui-ux-pro-max` |
+| Design system / UI | `design-taste` |
 | Code quality / Refactor | `clean-code`, `codebase-cleanup-tech-debt` |
 | Documentation | `documentation`, `readme` |
 
 ### Ví dụ Suy Luận
 
 **Task**: "Initialize Vite project + implement CSS design system + build app shell"
-→ Skills: `javascript-mastery`, `ui-ux-pro-max`, `web-performance-optimization`, `clean-code`
+→ Skills: `javascript-mastery`, `design-taste`, `web-performance-optimization`, `clean-code`
 
 **Task**: "Build Flutter login screen with auth API"
 → Skills: `flutter-expert`, `auth-implementation-patterns`, `api-design-principles`

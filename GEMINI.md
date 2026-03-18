@@ -47,7 +47,7 @@ Luôn tuân theo chu trình Nexus:
 
 ## Framework
 - `.agent/workflows/` — 15 workflow definitions
-- `.agent/skills/` — 116 skills thuộc 14 danh mục (Antigravity auto-discover)
+- `.agent/skills/` — 119 skills thuộc 14 danh mục (Antigravity auto-discover)
 - `.agent/agents/` — 6 agents + 13 shared protocols
 - `.agent/orchestration/` — Orchestrator và memory schema
 - `.agent/maintenance/` — Usage logging và self-learning

@@ -1,4 +1,4 @@
-# Nexus Skill Index — 116 skills / 14 categories
+# Nexus Skill Index — 119 skills / 14 categories
 
 > Auto-generated. Use this index to find the right skill for any task.
 >
@@ -21,7 +21,7 @@
 | React, Next.js | `frontend/` | react-best-practices, react-patterns, nextjs-best-practices |
 | Angular | `frontend/` | angular |
 | CSS, Tailwind | `frontend/` | tailwind-design-system |
-| UI, UX | `frontend/` | ui-ux-pro-max |
+| UI, UX, Design | `frontend/` | design-taste, design-redesign, design-output, design-minimalist |
 | Web Perf | `frontend/` | web-performance-optimization |
 | Flutter, Dart | `mobile/` | flutter-expert |
 | React Native | `mobile/` | react-native-architecture |
@@ -128,17 +128,20 @@ Backend frameworks and server patterns.
 | `fastapi-pro` | FastAPI Python framework |
 | `laravel-expert` | Laravel PHP framework, 187 lines |
 
-### 🎨 frontend/ (7 skills)
-Frontend frameworks, UI/UX, performance.
+### 🎨 frontend/ (10 skills)
+Frontend frameworks, UI/UX design, performance.
 
 | Skill | Purpose |
 |-------|---------|
+| `design-taste` | Anti-slop design intelligence, creative arsenal, dials, checklist |
+| `design-redesign` | Existing project UI audit + upgrade framework |
+| `design-output` | Full-output enforcement, anti-lazy |
+| `design-minimalist` | Editorial/Notion-style minimalist design overlay |
 | `react-best-practices` | Vercel performance rules, 45 rules |
 | `react-patterns` | Component design, hooks, React 19 |
 | `nextjs-best-practices` | Next.js patterns |
 | `angular` | Angular framework |
 | `tailwind-design-system` | Tailwind CSS design system |
-| `ui-ux-pro-max` | UI/UX advanced design |
 | `web-performance-optimization` | Core Web Vitals, caching |
 
 ### 📱 mobile/ (2 skills)

@@ -8,7 +8,7 @@ Nexus uses 3 MCP servers throughout the project lifecycle:
 |-----------|---------|-----------|
 | **Serena** | Memory, symbolic code analysis, thinking tools, mode switching | Every workflow |
 | **Context7** | Library docs lookup, version-specific API reference | Plan, Execute, Debug |
-| **Pencil** | IDE-native vector design, design↔code sync, .pen files | Design phase |
+| **Pencil** | Design inspiration + visual mockup, design↔code sync, .pen files | Design phase (BẮT BUỘC) |
 
 ---
 
@@ -108,16 +108,29 @@ Context7 should be called automatically when:
 
 ### Usage in Design Workflow
 
-| Step | Pencil Usage |
-|------|-------------|
-| Setup | Tạo file `.pen` trong project workspace |
-| Wireframing | `batch_design(ops)` → tạo frames, components, layouts |
-| Visual Check | `get_screenshot(frameId)` → render preview để verify |
-| Design System | `get_variables()` / `set_variables()` → sync design tokens ↔ CSS vars |
-| Component Design | `batch_design(ops)` → tạo reusable components |
-| Layout Analysis | `snapshot_layout(parentId)` → detect overlap, spacing issues |
-| Design→Code | AI reads `.pen` file → **Context7 verify APIs** → generates React/Vue/Svelte/HTML code |
-| Code→Design | AI reads code → tạo visual representation trong `.pen` |
+Pencil đóng **2 vai trò** trong design workflow:
+
+**Vai trò 1: Gợi ý Design (Inspiration)**
+
+| Step | Pencil Tool | Purpose |
+|------|-------------|--------|
+| Foundation | `get_style_guide(tags)` | Visual style inspiration |
+| Foundation | `get_guidelines("web-app"/"mobile-app"/"landing-page")` | Layout best practices |
+| Screen Design | `get_guidelines(topic)` | Layout suggestions per screen type |
+
+**Vai trò 2: Tạo Mockup (Visual)**
+
+| Step | Pencil Tool | Purpose |
+|------|-------------|--------|
+| Foundation | `batch_design(ops)` | Direction mockups, visual foundation |
+| Foundation | `set_variables(vars)` | Sync design tokens vào .pen |
+| Wireframing | `batch_design(ops)` | Wireframe per screen |
+| Component Design | `batch_design(ops)` | Component library (reusable) |
+| Full Mockup | `batch_design(ops)` | Full-fidelity mockups |
+| Validation | `snapshot_layout(parentId)` | Detect overlap, spacing issues |
+| Review | `get_screenshot(nodeId)` | Render preview cho user review |
+| Handoff | `export_nodes(nodeIds, format)` | Export design images |
+| Design→Code | AI reads `.pen` → Context7 verify APIs → generates code |
 
 ### Pencil + Context7 Cross-Reference (BẮT BUỘC khi Design→Code)
 
@@ -127,7 +140,9 @@ Quy trình: `batch_get()` → `resolve-library-id()` → `query-docs()` → veri
 
 ### When Pencil is Not Available
 
-Fall back to text-based design: ASCII wireframes, Mermaid diagrams, manual design tokens.
+> **`/design` workflow**: Pencil là BẮT BUỘC. Nếu Pencil không khả dụng → **DỮNG workflow**, thông báo user kiểm tra và sửa Pencil MCP. KHÔNG tự mockup bằng HTML/image.
+>
+> **Các workflow khác** (execute, review): Fall back to text-based analysis nếu cần.
 
 ---
 

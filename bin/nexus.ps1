@@ -12,7 +12,7 @@ param(
 )
 
 $NexusRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
-$NexusVersion = "3.1"
+$NexusVersion = "3.2"
 
 # --- Subcommands ---
 $subcommand = if ($Commands.Count -gt 0) { $Commands[0] } else { $null }

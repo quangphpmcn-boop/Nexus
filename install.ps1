@@ -11,7 +11,7 @@ param(
 
 # --- Auto-detect Nexus source from script location (Fix #1) ---
 $NexusRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$NexusVersion = "3.1"
+$NexusVersion = "3.2"
 
 
 # --- Helpers ---
@@ -128,7 +128,7 @@ else {
         }
     }
 
-    Write-Host "    • workflows/ (15) • skills/ (116)" -ForegroundColor DarkGray
+    Write-Host "    • workflows/ (15) • skills/ (119)" -ForegroundColor DarkGray
     Write-Host "    • agents/ (6+13)  • orchestration/" -ForegroundColor DarkGray
     Write-Host "    • maintenance/    • templates/ (10)" -ForegroundColor DarkGray
     Write-Host "    • rules/" -ForegroundColor DarkGray
@@ -241,7 +241,7 @@ Write-Host ""
 
 $installed = @()
 if (Test-Path (Join-Path $ProjectPath ".agent\workflows")) { $installed += "Workflows (15)" }
-if (Test-Path (Join-Path $ProjectPath ".agent\skills\nexus")) { $installed += "Skills (116)" }
+if (Test-Path (Join-Path $ProjectPath ".agent\skills\nexus")) { $installed += "Skills (119)" }
 if (Test-Path (Join-Path $ProjectPath ".agent\agents")) { $installed += "Agents (6+13)" }
 if (Test-Path (Join-Path $ProjectPath ".agent\rules")) { $installed += "Rules" }
 if (Test-Path (Join-Path $ProjectPath ".agent\orchestration")) { $installed += "Orchestration" }

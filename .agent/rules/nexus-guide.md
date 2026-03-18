@@ -52,7 +52,7 @@ Dự án này sử dụng **Nexus Framework** — framework phát triển agenti
 
 ## Framework Location
 - `.agent/workflows/` — 14 workflows
-- `.agent/skills/` — 116 skills (auto-discover)
+- `.agent/skills/` — 119 skills (auto-discover)
 - `.agent/agents/` — 6 agents + 14 protocols
 - `.agent/orchestration/` — Orchestrator
 - `.agent/maintenance/` — Logging + self-learning

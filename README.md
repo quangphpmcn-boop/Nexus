@@ -13,7 +13,7 @@ Nexus là framework phát triển phần mềm agentic có cấu trúc, thiết 
 - [Kiến trúc](#-kiến-trúc)
 - [Workflow Engine](#-workflow-engine)
 - [6 Agents chuyên biệt](#-6-agents-chuyên-biệt)
-- [116 Skills](#-116-skills)
+- [119 Skills](#-119-skills)
 - [3 MCP tích hợp](#-3-mcp-tích-hợp)
 - [Shared Protocols](#-shared-protocols)
 - [Self-Learning (Reasoning Bank)](#-self-learning-reasoning-bank)
@@ -110,7 +110,7 @@ project/
 │   │   ├── end.md                   # Kết thúc phiên làm việc
 │   │   ├── learn.md                 # Extract patterns → reasoning-bank
 │   │   └── evolve.md                # Cluster patterns → skill amendments
-│   ├── skills/                      # 116 skills — Antigravity auto-discover
+│   ├── skills/                      # 119 skills — Antigravity auto-discover
 │   │   ├── nexus/SKILL.md           # Framework entry point
 │   │   ├── SKILL-INDEX.md           # Bảng tra cứu keyword
 │   │   └── {14 categories}/         # Xem chi tiết bên dưới
@@ -281,7 +281,7 @@ Task fails → retry (same agent, up to max_retries)
 
 ---
 
-## 📚 116 Skills
+## 📚 119 Skills
 
 Skills là các chuyên môn domain mà Antigravity IDE tự động discover và áp dụng. Tổ chức thành **14 categories**:
 

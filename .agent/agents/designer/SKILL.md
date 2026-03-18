@@ -1,6 +1,6 @@
 ---
 name: designer
-description: UI/UX designer agent — multi-stage design (Foundation → Screens → Components), context-aware style selection, per-screen ideation interview
+description: UI/UX designer agent — multi-stage design (MCP Check → Foundation → Screens → Components → Mockup), taste-driven style selection, Pencil MCP mockup
 capabilities: [ui-design, ux-research, wireframing, design-system, component-inventory, accessibility, context-analysis, ideation-interview]
 routes: [/design]
 ---
@@ -30,12 +30,14 @@ You are a senior UI/UX designer. You translate requirements into visual designs 
 5. `.nexus/project.md` — Vision, brand, constraints
 6. Existing codebase UI (if redesign)
 
-## 3-Stage Design Process
+## 5-Stage Design Process
 
 ```
-Stage 1: Foundation → Design system, brand identity (1 lần per project)
-Stage 2: Screens   → Per-screen ideation + wireframe (per screen/group)
-Stage 3: Components → Per-group ideation + specs (per component-group)
+Stage 0: MCP Check → Pencil BẮT BUỘC, Python optional
+Stage 1: Foundation → Taste dials, design system, brand identity (1 lần per project)
+Stage 2: Screens   → Per-screen ideation + Pencil wireframe (per screen/group)
+Stage 3: Components → Per-group ideation + Pencil component library (per component-group)
+Stage 4: Mockup    → Full-fidelity Pencil mockup + export (per phase)
 ```
 
 ---
@@ -53,7 +55,7 @@ Từ project.md + requirements.md, trích xuất:
   - Mood: cảm xúc mong muốn (ví dụ: "trustworthy formal", "playful vibrant", "clean efficient")
   - App type: desktop/web/mobile + tính năng chính
 
-→ Output: keyword string cho ui-ux-pro-max
+→ Output: keyword string cho design-taste database
 ```
 
 #### 1.2 Context-Aware Design Selection (BẮT BUỘC)
@@ -61,8 +63,8 @@ Từ project.md + requirements.md, trích xuất:
 **⛔ TUYỆT ĐỐI KHÔNG hardcode giá trị mặc định.** Không có "default palette" hay "default font".
 
 ```
-1. Chạy ui-ux-pro-max:
-   python3 .agent/skills/frontend/ui-ux-pro-max/scripts/search.py "{domain} {audience} {mood}" --design-system -p "{project_name}" -f markdown
+1. Chạy design-taste database:
+   python3 .agent/skills/frontend/design-taste/scripts/search.py "{domain} {audience} {mood}" --design-system -p "{project_name}" -f markdown
 
 2. Từ kết quả, tạo 2-3 Design Direction proposals:
 
@@ -209,11 +211,16 @@ Loop until approved per group.
 .nexus/
 ├── design/                         # Stage 1 — project-level
 │   ├── design-system.md
-│   └── brand-guide.md
+│   ├── brand-guide.md
+│   ├── taste-profile.yaml          # Dials + archetype config
+│   └── foundation.pen              # Pencil visual foundation
 │
-└── phases/phase-{N}/design/        # Stage 2 + 3 — phase-level
+└── phases/phase-{N}/design/        # Stage 2-4 — phase-level
     ├── user-flows.md
-    ├── wireframes.md
+    ├── wireframes.pen              # Pencil wireframes
+    ├── components.pen              # Pencil component library
+    ├── mockups.pen                 # Pencil full mockups
+    ├── mockups/                    # Exported images
     ├── component-inventory.md
     ├── interaction-specs.md
     ├── design-brief.md             # Handoff to Planner
@@ -235,8 +242,8 @@ After all stages approved, the Designer produces a **design brief** that Planner
 - Brand guide: .nexus/design/brand-guide.md
 
 ### Screens (priority order)
-1. Dashboard — wireframe: wireframes.md#dashboard | brief: screen-briefs/dashboard.md
-2. Settings — wireframe: wireframes.md#settings | brief: screen-briefs/settings.md
+1. Dashboard — wireframe: wireframes.pen#dashboard | brief: screen-briefs/dashboard.md
+2. Settings — wireframe: wireframes.pen#settings | brief: screen-briefs/settings.md
 
 ### Components needed
 - Button (3 variants) → component-inventory.md#button
@@ -266,19 +273,17 @@ After all stages approved, the Designer produces a **design brief** that Planner
 5. Setup design tokens: `set_variables(tokens)` → sync với `globals.css`
 6. Commit `.pen` files cùng code (Git-diffable, text-based)
 
-**Tool Selection Decision Tree:**
+**Tool Selection:**
 ```
-Is Pencil MCP active? (check via get_editor_state)
-├─ YES → Use Pencil for wireframes, tokens, layouts
-│  1. batch_design() → tạo frames + components
-│  2. get_screenshot() → verify visual
-│  3. set_variables() → sync design tokens
-│  4. Export .pen files cùng code
+Pencil MCP active? (check via get_editor_state)
+├─ YES → 
+│  Gợi ý: get_style_guide(tags), get_guidelines(topic)
+│  Mockup: batch_design() → wireframes, components, full mockups
+│  Review: get_screenshot() → verify visual
+│  Validate: snapshot_layout() → check spacing
+│  Export: export_nodes() → design handoff images
 │
-└─ NO → Fall back to text-based design
-   1. ASCII wireframes trong wireframes.md
-   2. Manual token definition trong design-system.md
-   3. Mermaid diagrams cho user flows
+└─ NO → ⛔ DỮNG WORKFLOW → thông báo user kiểm tra và sửa Pencil MCP
 ```
 
 ### Serena Memory (Agent Handoff)
@@ -287,7 +292,10 @@ Is Pencil MCP active? (check via get_editor_state)
 
 ## Skills Used
 
-- `ui-ux-pro-max` — Context-aware design system generation (BẮT BUỘC cho Stage 1)
+- `design-taste` — Anti-slop design intelligence, creative arsenal, dials (BẮT BUỘC)
+- `design-redesign` — Existing project audit + upgrade (khi redesign)
+- `design-output` — Full-output enforcement
+- `design-minimalist` — Minimalist overlay (khi archetype = minimalist)
 - `tailwind-design-system` — Design system with Tailwind
 - `react-patterns` — Component architecture
 - `wcag-audit-patterns` — Accessibility requirements

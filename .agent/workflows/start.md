@@ -61,7 +61,9 @@ Hiện bảng status:
 ━━━━━━━━━━━━━━━━━━━━━
 ```
 
-> MCP không phải bắt buộc. Nếu unavailable → ghi nhận và tiếp tục. Framework có fallback cho tất cả MCP.
+> MCP không bắt buộc cho hầu hết workflows. Tuy nhiên:
+> - **Pencil**: BẮT BUỘC cho `/design`. Nếu Pencil ❌ → cảnh báo: "⚠️ Pencil MCP không khả dụng — `/design` sẽ không thể chạy. Kiểm tra MCP config và khởi động lại Pencil server."
+> - Serena, Context7: Nếu unavailable → ghi nhận, tiếp tục. Framework có fallback.
 
 ### Step 3: Serena Project Registration
 

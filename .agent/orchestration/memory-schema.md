@@ -25,8 +25,8 @@ Read by: Planner
 # Design Brief — Phase {N}
 
 ## Screens (priority order)
-1. [Screen Name] — wireframe: wireframes.md#anchor
-2. [Screen Name] — wireframe: wireframes.md#anchor
+1. [Screen Name] — wireframe: wireframes.pen#anchor
+2. [Screen Name] — wireframe: wireframes.pen#anchor
 
 ## Components needed
 - [Component] ([N] variants) → design-system.md#anchor

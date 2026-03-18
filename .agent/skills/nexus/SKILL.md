@@ -1,6 +1,6 @@
 ---
 name: nexus
-description: Nexus Framework — quy trình phát triển agentic thống nhất với quản lý dự án, điều phối đa agent, điều hướng thông minh, và 116 skill chuyên môn thuộc 13 danh mục
+description: Nexus Framework — quy trình phát triển agentic thống nhất với quản lý dự án, điều phối đa agent, điều hướng thông minh, và 119 skill chuyên môn thuộc 13 danh mục
 ---
 
 # Nexus Framework Skill
@@ -56,9 +56,9 @@ This skill activates when the user mentions:
 | **Reviewer** | Verification, security audit, quality check |
 | **Debugger** | Root cause analysis, minimal fix, lessons learned |
 
-## 116 Skills Library (Auto-routed)
+## 119 Skills Library (Auto-routed)
 
-The framework includes 116 domain skills organized in 13 categories:
+The framework includes 119 domain skills organized in 13 categories:
 
 | Category | Count | Examples |
 |----------|------:|---------|
@@ -87,7 +87,7 @@ All framework files are in `.agent/` at project root:
 - `.agent/orchestration/` — Orchestrator and memory schema
 - `.agent/maintenance/` — Usage logging and lessons learned
 - `.agent/templates/` — 10 project file templates
-- `.agent/skills/` — 116 skills library
+- `.agent/skills/` — 119 skills library
 
 > **Path Convention**: When reading framework files, all internal paths
 > (e.g. `agents/_shared/...`, `templates/...`) are relative to `.agent/`,

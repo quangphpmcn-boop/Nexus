@@ -1,5 +1,5 @@
 ---
-description: Thiết kế UI/UX cho phase — multi-stage design (Foundation → Screens → Components) với phỏng vấn ý tưởng per screen
+description: Thiết kế UI/UX cho phase — multi-stage design (Foundation → Screens → Components → Mockup) với Taste-Skill + Pencil MCP
 ---
 
 # /nexus:design [phase-number]
@@ -17,35 +17,98 @@ Design workflow — creates visual design artifacts before planning and coding.
 > Design runs AFTER init (requirements exist) and BEFORE plan (technical tasks).
 > Not all phases need design — only phases with UI changes.
 
+## Design Engine
+
+```
+┌─────────────────────────────────────────────────────┐
+│ TASTE-SKILL (Tầng Triết lý - LUÔN HOẠT ĐỘNG)       │
+│ Anti-slop · Creative Arsenal · Configurable Dials   │
+│ AI Tells · Bias Correction · Motion Principles      │
+├─────────────────────────────────────────────────────┤
+│ PENCIL MCP (Tầng Visual - BẮT BUỘC)                │
+│ 🎯 Gợi ý: style guide · guidelines · inspiration   │
+│ 🖌️ Mockup: wireframes · components · full mockup    │
+│ 🔍 Kiểm tra: screenshot · layout check · export     │
+│ ⛔ Không có Pencil = DỪNG workflow → sửa MCP        │
+├─────────────────────────────────────────────────────┤
+│ UI-UX-PRO-MAX DB (Tầng Data - BỔ TRỢ)              │
+│ CSV database · Python search · palette/font lookup  │
+│ Pre-delivery checklist · accessibility rules        │
+└─────────────────────────────────────────────────────┘
+```
+
 ## Multi-Stage Design Process
 
-Design chia thành **3 stages**, mỗi stage có phỏng vấn + review riêng:
-
 ```
+Stage 0: MCP Readiness Check  ─── kiểm tra Pencil + Python
+  → Pencil BẮT BUỘC — dừng nếu thiếu
+
 Stage 1: Foundation Design  ─── 1 lần per project (hoặc major redesign)
-  → Brand identity, design system, color + typography + spacing tokens
+  → Phỏng vấn sâu → Taste dials → Design system → Visual preview Pencil
 
 Stage 2: Screen Design  ─── lặp lại per screen/screen-group
-  → Phỏng vấn ý tưởng → wireframe → user flow → review per screen
+  → Phỏng vấn ý tưởng → Pencil wireframe → Anti-slop validation → review
 
 Stage 3: Component Design  ─── lặp lại per component-group
-  → Phỏng vấn ý tưởng → component specs → interaction specs → review per group
+  → Phỏng vấn → Pencil component library → interaction specs → review
+
+Stage 4: Visual Mockup  ─── full-fidelity trong Pencil
+  → Pencil full mockup → validation → export → handoff
 ```
 
-> **Stage 1 chỉ cần chạy 1 lần** cho dự án (hoặc khi major redesign). Stage 2+3 chạy cho mỗi phase có UI.
-> Nếu Foundation đã tồn tại từ phase trước → skip Stage 1, bắt đầu từ Stage 2.
+> **Stage 1 chỉ cần chạy 1 lần** cho dự án (hoặc khi major redesign). Stage 2-4 chạy cho mỗi phase có UI.
+> Nếu Foundation đã tồn tại → skip Stage 1, bắt đầu từ Stage 2.
 
 ## Prerequisites
 
 - [ ] `.nexus/state.md` exists
 - [ ] `.nexus/requirements.md` has requirements for this phase
 - [ ] `.nexus/roadmap.md` shows this phase
-- [ ] Read `.agent/agents/_shared/mcp-protocol.md` → use Pencil MCP for mockup generation
+- [ ] Read `.agent/skills/frontend/design-taste/SKILL.md` → core design rules
+- [ ] Read `.agent/agents/_shared/mcp-protocol.md` → Pencil MCP tools
 - [ ] Read `.agent/agents/_shared/bilingual-protocol.md` → language rules
-- [ ] Read `.agent/agents/_shared/behavioral-rules.md` → file discipline, security, quality rules
-- [ ] Read `.agent/agents/_shared/memory-protocol.md` → memory read/write rules
+- [ ] Read `.agent/agents/_shared/behavioral-rules.md` → quality rules
+- [ ] Read `.agent/agents/_shared/memory-protocol.md` → memory rules
 
 ## Workflow Steps
+
+### Step 0: MCP Readiness Check (BẮT BUỘC)
+
+```
+Step 0.1: Pencil MCP Health Check
+  → Gọi get_editor_state()
+  → SUCCESS: ✅ Tiếp tục
+  → FAIL: ⛔ DỪNG WORKFLOW
+    ┌──────────────────────────────────────────────┐
+    │ ⛔ PENCIL MCP KHÔNG KHẢ DỤNG                 │
+    │                                              │
+    │ Design workflow yêu cầu Pencil MCP hoạt động │
+    │ để tạo mockup và gợi ý thiết kế.             │
+    │                                              │
+    │ Kiểm tra:                                    │
+    │  1. Pencil MCP config trong mcp_config.json  │
+    │  2. Pencil MCP server đã khởi động chưa      │
+    │  3. Editor state có accessible không          │
+    │                                              │
+    │ Sau khi sửa xong, chạy lại /design           │
+    └──────────────────────────────────────────────┘
+    → KHÔNG tiếp tục. KHÔNG tự mockup bằng HTML/image.
+
+Step 0.2: Python Check (cho design database)
+  → python3 --version || python --version
+  → FAIL: Cảnh báo (không block) — AI dùng built-in knowledge
+
+Step 0.3: Hiện Design Engine Status
+  ┌─────────────────────────────────────┐
+  │ 🎨 DESIGN ENGINE STATUS             │
+  │                                     │
+  │ Taste-Skill  ✅ Core (luôn active)  │
+  │ Pencil MCP   ✅ Active (bắt buộc)  │
+  │ Design DB    ✅/⚠️ [python status]  │
+  │                                     │
+  │ ▶ Sẵn sàng thiết kế                 │
+  └─────────────────────────────────────┘
+```
 
 ### Step 1: Determine Scope
 
@@ -70,66 +133,111 @@ Read (in order):
 
 > **⛔ FRESH DESIGN RULE**: Thiết kế dựa trên requirements và project.md của DỰ ÁN NÀY.
 > - KHÔNG copy layout, color scheme, component structure từ dự án cũ qua KIs
-> - KHÔNG giả định dự án mới muốn phong cách giống dự án trước
 > - PHẢI phân tích project domain/audience/content TRƯỚC khi đề xuất style
 
-### Step 3: User Research (5 min) — Chỉ lần đầu
+### Step 3: User Research — Chỉ lần đầu
 
-Ask user (if not already defined):
-- Ai là người dùng chính? (Who are the primary users?)
-- Họ muốn đạt được gì? (What are their goals?)
-- Có brand guidelines / design system sẵn không? (Existing brand/design system?)
-- Preferences: dark/light mode, style (minimal/rich/corporate)?
+Câu hỏi cốt lõi:
+- Ai là người dùng chính? Goals?
+- Có brand guidelines / design system sẵn không?
+- Dark/light mode preference?
 
-Sau khi thu thập thông tin → chuyển sang Stage phù hợp.
+Câu hỏi Taste Profile (MỚI):
+```
+5. Design Variance: "Bạn muốn layout..."
+   □ Clean, chuẩn mực (1-3) — corporate, government
+   □ Sáng tạo vừa phải (4-7) — startup, product
+   □ Experimental (8-10) — creative, portfolio
+
+6. Motion Intensity: "Mức animation..."
+   □ Tĩnh (1-3) — admin, enterprise
+   □ Mượt mà (4-7) — SaaS, consumer
+   □ Cinematic (8-10) — landing, showcase
+
+7. Visual Density: "Mật độ nội dung..."
+   □ Thoáng đãng (1-3) — portfolio, luxury
+   □ Cân bằng (4-7) — webapp, general
+   □ Dày đặc (8-10) — dashboard, admin
+
+8. Design Archetype: "Phong cách tổng thể..."
+   □ Standard Premium (design-taste base)
+   □ Minimalist Editorial (+ design-minimalist overlay)
+   □ Awwwards-tier Luxury (creative arsenal max)
+   □ Tùy chỉnh — mô tả thêm
+```
+
+Output: **Taste Profile**
+```yaml
+DESIGN_VARIANCE: [1-10]
+MOTION_INTENSITY: [1-10]
+VISUAL_DENSITY: [1-10]
+ARCHETYPE: standard | minimalist | luxury | custom
+SKILL_OVERLAY: [design-minimalist | none]
+```
 
 **Initialize tracking:**
 ```
-TRACKING: Agents: [designer] | Skills: [] ⛔ KHÔNG "nexus" | MCP Tools: [] | Sự cố: []
+TRACKING: Agents: [designer] | Skills: [design-taste] | MCP Tools: [pencil] | Sự cố: []
 ```
 
 ---
 
 ## Stage 1: Foundation Design (1 lần per project)
 
-> Mục tiêu: Xác lập identity thiết kế cho toàn bộ dự án. Chạy 1 lần duy nhất.
+> Mục tiêu: Xác lập identity thiết kế. Chạy 1 lần duy nhất.
 
-### 1.1 Context Analysis
-
-Phân tích project để tạo keywords thiết kế:
+### 1.1 Context Analysis + Taste Configuration
 
 ```
 Inputs:
   - project.md → domain, audience, vision
-  - requirements.md → loại app (desktop/web/mobile), tính năng chính
-  - User Research → preferences, brand
+  - requirements.md → loại app, tính năng chính
+  - User Research → Taste Profile (3 dials + archetype)
+
+Actions:
+  - Set DESIGN_VARIANCE, MOTION_INTENSITY, VISUAL_DENSITY
+  - Load skill overlay (design-minimalist nếu chọn)
+  - Apply Bias Correction rules từ design-taste
 
 Outputs:
-  - Domain keywords (ví dụ: "military administrative", "beauty spa wellness", "fintech crypto")
-  - Audience keywords (ví dụ: "professional enterprise", "young casual", "admin power-user")
-  - Mood keywords (ví dụ: "serious trustworthy", "playful vibrant", "clean minimal")
+  - Domain keywords
+  - Audience keywords
+  - Mood keywords
+  - Active Taste Profile
 ```
 
 ### 1.2 Design Direction Proposals (BẮT BUỘC — KHÔNG hardcode)
 
 ```
-1. Chạy ui-ux-pro-max → generate design system recommendations:
-   python3 .agent/skills/frontend/ui-ux-pro-max/scripts/search.py "{keywords}" --design-system -p "{project_name}" -f markdown
+Bước 1 — Data lookup (design database — bổ trợ):
+  IF PYTHON_AVAILABLE:
+    → python3 .agent/skills/frontend/design-taste/scripts/search.py "{keywords}" --design-system -p "{project_name}" -f markdown
+    → Lấy palette, font, style recommendations
+  ELSE:
+    → AI dùng built-in design-taste knowledge
 
-2. Từ kết quả, tạo 2-3 Design Direction proposals:
+Bước 2 — Creative filtering (design-taste — chủ đạo):
+  → Apply AI Tells filter: loại bỏ kết quả generic
+  → Apply Bias Correction: đảm bảo không trùng AI clichés
+  → Apply Dials: filter theo DESIGN_VARIANCE/MOTION/DENSITY
+  → Tạo 3 Direction Proposals qua lăng kính taste-skill
 
-   | Tiêu chí | Direction A | Direction B | Direction C |
-   |----------|-------------|-------------|-------------|
-   | Style | [tên style] | [tên style] | [tên style] |
-   | Palette | [colors] | [colors] | [colors] |
-   | Typography | [heading/body] | [heading/body] | [heading/body] |
-   | Mood | [mô tả] | [mô tả] | [mô tả] |
-   | Phù hợp khi | [context] | [context] | [context] |
+Bước 3 — Design inspiration (Pencil — gợi ý):
+  → Pencil get_style_guide(tags) → visual inspiration
+  → Pencil get_guidelines("web-app"/"mobile-app"/"landing-page") → layout best practices
+  → Kết hợp Pencil inspiration + taste-skill filtering → refine 3 directions
 
-   → AI khuyến nghị: Direction [X] vì [lý do dựa trên project context]
-   → User chọn: ☐ A / ☐ B / ☐ C / ☐ Khác
+Bước 4 — Visual preview (Pencil — mockup):
+  → Tạo file foundation.pen
+  → Pencil batch_design() → 3 visual direction mockups
+  → Pencil get_screenshot() → render preview images
 
-3. ⛔ CẤM dùng giá trị mặc định cố định (như #2563EB, Inter)
+Bước 5 — User review:
+  → Hiện 3 directions kèm hình preview từ Pencil
+  → AI khuyến nghị Direction [X] vì [lý do]
+  → User chọn → Lock direction
+
+⛔ CẤM dùng giá trị mặc định cố định (như #2563EB, Inter)
    → Palette và font PHẢI được chọn dựa trên domain analysis
 ```
 
@@ -139,7 +247,6 @@ Outputs:
 Nếu KIs có design decisions từ dự án trước:
   → So sánh palette + font + style đề xuất vs 3 dự án gần nhất
   → Nếu trùng > 2/3 yếu tố → PHẢI đề xuất alternatives khác biệt
-  → Giải thích cho user: "Style này khác [dự án cũ] ở [điểm X, Y, Z]"
 ```
 
 ### 1.4 Create Foundation Artifacts
@@ -150,16 +257,19 @@ Sau khi user chọn direction:
 |----------|------|---------|
 | Design System | `design-system.md` | Color tokens, typography, spacing, shadows, radius |
 | Brand Guide | `brand-guide.md` | Tone of voice, visual principles, do's & don'ts |
+| Taste Profile | `taste-profile.yaml` | 3 dials + archetype + active overlays |
+| Foundation Visual | `foundation.pen` | Pencil file: swatches, font samples, spacing scale |
 
-Saved to: `.nexus/design/` (project-level, không phải per-phase)
+Saved to: `.nexus/design/`
+
+Pencil sync: `set_variables()` → đồng bộ design tokens vào `.pen` file
 
 ### 1.5 Foundation Review
 
 Present Foundation to user:
-- Palette swatches với usage context
-- Font pairing ví dụ
+- Pencil screenshots: palette swatches, font pairing, component style preview
 - Spacing scale
-- Component style preview (border, shadow, radius)
+- Active Taste Profile values
 
 Ask: "Bạn duyệt Foundation Design này không?"
 Loop until approved → **Foundation locked** ✅
@@ -168,7 +278,7 @@ Loop until approved → **Foundation locked** ✅
 
 ## Stage 2: Screen Design (per screen/screen-group)
 
-> Mục tiêu: Wireframe + layout chi tiết cho từng screen. Chạy per screen hoặc nhóm screens liên quan.
+> Mục tiêu: Wireframe + layout chi tiết cho từng screen trong Pencil.
 
 ### 2.0 Screen Inventory
 
@@ -178,76 +288,92 @@ Liệt kê tất cả screens dự kiến cho phase này:
 Phase {N} — Screens cần thiết kế:
 1. [Screen A] — [mô tả ngắn]
 2. [Screen B] — [mô tả ngắn]
-3. [Screen C] — [mô tả ngắn]
 ...
-
-→ User xác nhận danh sách hoặc bổ sung
+→ User xác nhận hoặc bổ sung
 ```
 
 ### 2.1 Screen Ideation Interview (per screen)
 
 Read `_shared/requirements-elicitation.md` → apply **Loại 4: Design Ideation — Screen-Level**.
 
-Với mỗi screen (hoặc nhóm screens liên quan):
-
 ```
-1. Purpose: "Mục đích chính của [screen]? User đến đây để làm gì?"
-2. Content: "Thông tin quan trọng nhất? Nội dung đặc biệt (charts, forms, tables)?"
-3. Layout: Đề xuất 2-3 layout alternatives → user chọn
-4. Interaction: "User tương tác chính là gì? Cảm giác mong muốn?"
-5. References: "Có inspiration/reference nào bạn thích?"
+Với mỗi screen:
+1. Purpose: "Mục đích chính? User đến đây để làm gì?"
+2. Content: "Thông tin quan trọng nhất? Nội dung đặc biệt?"
+3. Layout: Đề xuất 2-3 layout alternatives (gợi ý từ Creative Arsenal)
+   → Pencil get_guidelines() → layout suggestions per screen type
+4. Interaction: "User tương tác chính? Cảm giác mong muốn?"
+5. References: "Có inspiration nào bạn thích?"
 
 → Tổng hợp thành Screen Brief
 → User xác nhận → rồi mới wireframe
 ```
 
-> Gom câu hỏi thành **1 block per screen** — không hỏi lẻ tẻ từng câu.
+> Gom câu hỏi thành **1 block per screen** — không hỏi lẻ tẻ.
+> Nhắc anti-patterns: chiếu theo AI Tells (tránh centered hero nếu DESIGN_VARIANCE > 4, etc.)
 
 ### 2.2 Create Screen Artifacts
 
-Invoke **Designer agent** per screen:
+Per screen:
 
 | Artifact | File | Content |
 |----------|------|---------|
-| User Flows | `user-flows.md` | Mermaid flowcharts for user journeys (updated per screen) |
-| Wireframes | `wireframes.md` | Wireframe per screen with annotations |
-| Screen Briefs | `screen-briefs/{screen-name}.md` | Interview results + decisions per screen |
+| User Flows | `user-flows.md` | Mermaid flowcharts (updated per screen) |
+| Wireframes | `wireframes.pen` | Pencil wireframe per screen |
+| Screen Briefs | `screen-briefs/{screen-name}.md` | Interview results |
 
-All files saved to: `.nexus/phases/phase-{N}/design/`
+```
+→ Pencil get_guidelines("web-app"/"mobile-app") → layout rules
+→ Pencil batch_design() → wireframe .pen per screen
+→ Apply design-taste rules trong thiết kế
+→ Pencil get_screenshot() → preview cho review
+```
 
-> **Context7**: Nếu dự án dùng component library (Fluent UI, Material, Ant Design...) → gọi Context7 tra cứu design tokens & component API trước khi tạo wireframe.
+> **Context7**: Nếu dự án dùng component library → tra cứu design tokens & component API.
 
-### 2.3 Screen Review (per screen/group)
+### 2.3 Anti-Slop Validation (per screen)
+
+```
+Checklist tự động (từ design-taste Section 7):
+  □ Không centered hero (nếu DESIGN_VARIANCE > 4)
+  □ Không 3-column equal cards
+  □ Không Inter/Roboto/Arial
+  □ Không purple-blue AI gradient
+  □ Không generic placeholder names
+  □ Không emoji icons
+  □ Content có organic data
+
+IF vi phạm → tự fix trong Pencil trước khi review
+```
+
+### 2.4 Screen Review (per screen/group)
 
 Present each screen to user:
 1. Screen brief recap
 2. User flow cho screen
-3. Wireframe với annotations
+3. Pencil screenshot với annotations
 
-Ask: "Bạn duyệt wireframe cho [Screen X] không? Có gì cần thay đổi?"
+Ask: "Bạn duyệt wireframe cho [Screen X] không?"
 Loop until approved per screen.
 
-### 2.4 Update Design Brief (incremental)
+### 2.5 Update Design Brief (incremental)
 
-Sau mỗi screen approved, cập nhật `design-brief.md`:
-- Thêm screen vào priority list
-- Update component needs
-- Update responsive notes
+Sau mỗi screen approved, cập nhật `design-brief.md`.
 
 ---
 
 ## Stage 3: Component Design (per component-group)
 
-> Mục tiêu: Chi tiết states, variants, interactions cho từng component. Chạy per component-group.
+> Mục tiêu: Chi tiết states, variants, interactions. Tạo component library trong Pencil.
 
 ### 3.0 Component Grouping
 
-Từ wireframes đã duyệt, nhóm components tự nhiên:
+Từ wireframes đã duyệt, nhóm components:
 
 ```
 Component Groups:
-1. Form Controls — Button, Input, Select, Checkbox, DatePicker, ...
-2. Navigation — Sidebar, Tabs, Breadcrumb, Pagination, ...
+1. Form Controls — Button, Input, Select, Checkbox, ...
+2. Navigation — Sidebar, Tabs, Breadcrumb, ...
 3. Data Display — Table, Card, Badge, Tag, Avatar, ...
 4. Feedback — Toast, Modal, Alert, Progress, Skeleton, ...
 5. Overlays — Dialog, Drawer, Popover, Tooltip, ...
@@ -259,32 +385,78 @@ Read `_shared/requirements-elicitation.md` → apply **Loại 4: Design Ideation
 
 ```
 Với mỗi component group:
-1. Inventory: "Bạn cần components nào trong nhóm [group]?"
+1. Inventory: "Bạn cần components nào?"
    → Đề xuất danh sách dựa trên wireframes
-2. Behavior: "States cần thiết? Interaction đặc biệt? Responsive variants?"
-   → Đề xuất based on context
+2. Behavior: "States? Interactions? Responsive variants?"
+3. Motion: Áp dụng design-taste motion principles per component type
+   → Nếu MOTION_INTENSITY > 5: thêm specs cho hover physics, spring animations
 
-→ Tổng hợp thành Component Brief
-→ User xác nhận
+→ Tổng hợp thành Component Brief → User xác nhận
 ```
 
 ### 3.2 Create Component Artifacts
 
 | Artifact | File | Content |
 |----------|------|---------|
+| Component Library | `components.pen` | Pencil reusable components |
 | Component Inventory | `component-inventory.md` | All components + states + variants |
 | Interaction Specs | `interaction-specs.md` | Animations, transitions, behaviors |
-| Component Briefs | `component-briefs/{group-name}.md` | Interview results per group |
+| Component Briefs | `component-briefs/{group-name}.md` | Interview results |
+
+```
+→ Pencil batch_design() → component library .pen (reusable)
+→ Pencil get_screenshot() → render component states
+```
 
 ### 3.3 Component Review (per group)
 
 Present component specs per group:
-1. Component list with states
+1. Pencil screenshots: component list with states
 2. Interaction specs
 3. Responsive behavior
 
 Ask: "Bạn duyệt component specs cho nhóm [Group X] không?"
 Loop until approved per group.
+
+---
+
+## Stage 4: Visual Mockup (FULL FIDELITY)
+
+> Mục tiêu: Full-fidelity mockup trong Pencil. Review cuối cùng trước handoff.
+
+### 4.1 Full Mockup
+
+```
+→ Pencil batch_design() → compose full screens từ wireframes + components
+→ Apply design tokens từ foundation.pen
+→ Apply design-taste premium polish:
+  - Generous whitespace (per VISUAL_DENSITY)
+  - Depth and layering
+  - Motion annotations (per MOTION_INTENSITY)
+  - Realistic content (no AI Tells)
+```
+
+### 4.2 Validation
+
+```
+→ Pencil snapshot_layout() → detect overlap, spacing issues
+→ Anti-slop final check (design-taste Section 7 — AI Tells)
+→ Pre-delivery checklist (design-taste Section 8):
+  - Accessibility: contrast, focus, alt text, keyboard
+  - Touch: target size, cursor, feedback
+  - Visual: no emoji, consistent icons, smooth transitions
+  - Layout: responsive, no horizontal scroll, no hidden content
+  - Light/Dark: contrast, transparency, borders
+```
+
+### 4.3 Review + Export
+
+```
+→ Pencil get_screenshot() → preview per screen
+→ User review → iteration loop until approved
+→ Pencil export_nodes(format="png") → design handoff images
+→ Save to .nexus/phases/phase-{N}/design/mockups/
+```
 
 ---
 
@@ -297,6 +469,7 @@ After all stages approved, create/update `design-brief.md`:
 - Component dependency order (from Stage 3)
 - Design token reference (from Stage 1)
 - Responsive breakpoint rules
+- Mockup file references (from Stage 4)
 
 This file is the **handoff artifact** — Planner reads it when creating technical plans.
 
@@ -307,7 +480,7 @@ This file is the **handoff artifact** — Planner reads it when creating technic
 - current_phase: N
 - current_step: "design-complete"
 - design_status: "approved"
-- stages_completed: [foundation, screens, components]
+- stages_completed: [foundation, screens, components, mockup]
 - next_action: "/nexus:plan N"
 ```
 
@@ -316,7 +489,7 @@ This file is the **handoff artifact** — Planner reads it when creating technic
 ```
 ━━━ 🧭 HƯỚNG DẪN TIẾP THEO ━━━
 
-Phase {N}: {name} │ Design: ✅ Approved (3 stages)
+Phase {N}: {name} │ Design: ✅ Approved (4 stages)
 
 ▶ Thiết kế đã được duyệt. Các bước tiếp:
 
@@ -340,21 +513,26 @@ Ghi vào `.nexus/logs/usage-log.md`.
 .nexus/
 ├── design/                         # Project-level (Stage 1)
 │   ├── design-system.md            # Color, typography, spacing tokens
-│   └── brand-guide.md              # Visual principles, do's & don'ts
+│   ├── brand-guide.md              # Visual principles, do's & don'ts
+│   ├── taste-profile.yaml          # Dials + archetype config
+│   └── foundation.pen              # Pencil visual foundation
 │
-└── phases/phase-{N}/design/        # Phase-level (Stage 2 + 3)
+└── phases/phase-{N}/design/        # Phase-level (Stage 2-4)
     ├── user-flows.md               # Mermaid flow diagrams
-    ├── wireframes.md               # Wireframes per screen
+    ├── wireframes.pen              # Pencil wireframes
+    ├── components.pen              # Pencil component library
+    ├── mockups.pen                 # Pencil full mockups
+    ├── mockups/                    # Exported images from Pencil
+    │   ├── screen-1.png
+    │   └── ...
     ├── component-inventory.md      # Component list + states
     ├── interaction-specs.md        # Animation + behavior specs
     ├── design-brief.md             # Handoff artifact for Planner
     ├── screen-briefs/              # Per-screen interview results
     │   ├── dashboard.md
-    │   ├── settings.md
     │   └── ...
     └── component-briefs/           # Per-group interview results
         ├── form-controls.md
-        ├── navigation.md
         └── ...
 ```
 
@@ -362,8 +540,8 @@ Ghi vào `.nexus/logs/usage-log.md`.
 
 | Antigravity Mode | Design Mapping |
 |-----------|---------------|
-| PLANNING | Step 1-2: Determine scope, load context |
-| EXECUTION | Stage 1-3: Create design artifacts with user interviews |
+| PLANNING | Step 0-2: MCP check, scope, context |
+| EXECUTION | Stage 1-4: Create design artifacts with user interviews |
 | VERIFICATION | Finalization: Confirm all stages approved, update state |
 
 ## When to Skip Design
@@ -377,7 +555,8 @@ Ghi vào `.nexus/logs/usage-log.md`.
 | Stage | Skip khi |
 |-------|----------|
 | Stage 1 (Foundation) | Foundation đã tồn tại từ phase trước |
-| Stage 3 (Components) | Phase chỉ dùng components đã thiết kế ở phase trước, không có component mới |
+| Stage 3 (Components) | Phase chỉ dùng components đã có, không component mới |
+| Stage 4 (Mockup) | Phase là minor UI tweak, không cần full mockup |
 
 ## Related Workflows
 
