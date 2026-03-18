@@ -82,7 +82,7 @@ Hệ thống hỏi đáp thông minh với 3 mức độ (thorough/balanced/quic
 
 ### 7. Design-First Approach
 
-Phase nào có UI đều phải qua `/design` trước khi `/plan`. Tạo wireframes, user flows, design system, component inventory — tất cả trước khi viết dòng code đầu tiên.
+Phase nào có UI đều phải qua `/design` trước khi `/plan`. Quy trình 5 stages: MCP Check → Foundation Design → Screen Design → Component Design → Visual Mockup. Tất cả được thực hiện trong Pencil MCP với triết lý anti-slop từ Taste-Skill.
 
 ---
 
@@ -180,7 +180,7 @@ project/
 | Lệnh | Giai đoạn | Khi nào dùng | Mô tả |
 |-------|-----------|-------------|-------|
 | `/init` | Khởi tạo | Đầu dự án | Hỏi đáp → tạo `.nexus/` với state, project, requirements, roadmap |
-| `/design [N]` | Thiết kế | Phase có UI | Wireframes, user flows, design system, component inventory |
+| `/design [N]` | Thiết kế | Phase có UI | 5 stages: MCP Check → Foundation → Screens → Components → Mockup (Pencil MCP bắt buộc) |
 | `/plan [N]` | Kế hoạch | Mỗi phase | Phân rã thành plans atomic, nhóm waves, định nghĩa tasks |
 | `/execute [N]` | Xây dựng | Sau plan | Thực thi từng task theo wave, atomic commits |
 | `/verify [N]` | Kiểm tra | Sau execute | Automated tests, gap analysis, cross-plan integration |
@@ -237,7 +237,7 @@ Khi developer hỏi "nên làm gì?", Nexus tự đánh giá complexity (0-10):
 | Agent | Vai trò | Khi nào invoke | Skills chính |
 |-------|---------|---------------|-------------|
 | **Architect** | Phân tích yêu cầu, thiết kế kiến trúc, chọn tech stack | `/init`, tasks kiến trúc | DDD, C4, microservices |
-| **Designer** | Wireframes, user flows, design system, component inventory | `/design` | UI/UX, Figma, accessibility |
+| **Designer** | Wireframes, design system, Pencil mockups, taste-driven style | `/design` | design-taste, Pencil MCP |
 | **Planner** | Phân rã features thành plans atomic, nhóm waves | `/plan` | Task decomposition, dependency analysis |
 | **Executor** | Code theo plan, atomic commits, verify từng task | `/execute`, `/quick` | All programming languages |
 | **Reviewer** | Verify, security/performance/accessibility audit | `/verify`, `/review` | OWASP, WCAG, code quality |
@@ -290,7 +290,7 @@ Skills là các chuyên môn domain mà Antigravity IDE tự động discover v�
 | **ai/** | 8 | RAG pipelines, prompt engineering, LLM applications, MCP tools |
 | **architecture/** | 10 | DDD, C4 diagrams, microservices, saga patterns, monorepo |
 | **backend/** | 5 | NestJS, Django, FastAPI, Laravel, Node.js |
-| **frontend/** | 7 | React, Next.js, Angular, Tailwind, accessibility |
+| **frontend/** | 10 | React, Next.js, Angular, Tailwind, design-taste, design-redesign, design-output, design-minimalist |
 | **mobile/** | 2 | Flutter/Dart, React Native |
 | **languages/** | 15 | TypeScript, Python, Go, Rust, Java, C#, C++, Kotlin, Ruby... |
 | **testing/** | 8 | TDD, E2E, Playwright, pytest, bug finding |
@@ -363,12 +363,14 @@ MCP (Model Context Protocol) mở rộng khả năng của AI bằng cách kết
 | **Tokens** | `get/set_variables()` | Đọc/cập nhật design tokens ↔ CSS vars |
 | **Export** | `export_nodes()` | Export sang PNG/JPEG/WEBP/PDF |
 
-**Flow trong `/design`:**
-1. Tạo/mở `.pen` file → design elements → user review → iterate
-2. `get_variables()` → extract design tokens → save to `design-system.md`
-3. AI reads `.pen` → generates code reference (React/Vue/Svelte/HTML)
+**Flow trong `/design` (5 stages):**
+1. Stage 0: Kiểm tra Pencil MCP (⛔ bắt buộc — dừng nếu thiếu)
+2. Stage 1: Foundation — `get_style_guide()` + `get_guidelines()` gợi ý → `batch_design()` mockup
+3. Stage 2: Screens — `batch_design()` wireframes → `get_screenshot()` review
+4. Stage 3: Components — `batch_design()` component library
+5. Stage 4: Mockup — `snapshot_layout()` validation → `export_nodes()` handoff
 
-> **Fallback**: Nếu Pencil không khả dụng → ASCII wireframes + manual tokens.
+> **Bắt buộc cho `/design`**: Nếu Pencil không khả dụng → dừng workflow, thông báo user kiểm tra MCP. Không có fallback.
 
 ---
 
