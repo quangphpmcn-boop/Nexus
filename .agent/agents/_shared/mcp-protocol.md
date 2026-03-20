@@ -87,6 +87,32 @@ Context7 should be called automatically when:
 - Library version is specified in `package.json` / `requirements.txt`
 - Agent writes import statements for external packages
 
+### Enforcement Rules (v3.3)
+
+> Từ Nexus v3.3, Context7 **không còn chỉ khuyến nghị** — nó là hard requirement cho external libraries.
+
+**3 cấp độ:**
+
+| Cấp | Khi nào | Hành vi |
+|-----|---------|---------|
+| 🔴 **BẮT BUỘC** | Framework chính (FastAPI, React, Tauri...), thư viện API phức tạp, version-specific | PHẢI gọi Context7 TRƯỚC khi code. Không gọi = plan bị reject / code bị flag |
+| 🟡 **KHUYẾN NGHỊ MẠNH** | Utility có API riêng (openpyxl, docxtpl...), breaking changes possible | NÊN gọi. Bỏ qua cần ghi lý do |
+| 🔵 **OPTIONAL** | Thư viện đơn giản, ít API (icons, multipart...) | Gọi nếu cần. Không gọi = OK |
+
+**Compliance tracking:**
+
+Mỗi lần gọi Context7, PHẢI ghi vào 2 nơi:
+1. **Plan file** → `<context7-checklist>` section
+2. **Usage log** → `MCP Tools` field: `context7 ({library}: {query summary})`
+
+**Nếu Context7 unavailable:**
+- Ghi `⚠️ Context7 N/A, used training data for {library}` vào cả plan và usage log
+- Agent dùng training data nhưng PHẢI ghi note rõ ràng — reviewer cần biết để double-check
+
+**Verify checkpoint:**
+- `/verify` Step 3.5 sẽ **tự động kiểm tra** compliance score bằng cách cross-reference dependencies vs context7 entries
+- Score < 50% = FAIL advisory cho user
+
 ---
 
 ## 3. Pencil — IDE-Native Vector Design Tool

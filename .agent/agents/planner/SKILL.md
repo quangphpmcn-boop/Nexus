@@ -52,9 +52,9 @@ routes: [/plan]
 - `phase-{N}-{M}-PLAN.md` files (XML structured)
 - `wave-structure.md` — wave grouping and dependencies
 
-## Context7 — API Feasibility Check (KHUYẾN NGHỊ MẠNH khi plan dùng thư viện ngoài)
+## Context7 — API Feasibility Check (BẮT BUỘC khi plan dùng thư viện ngoài — v3.3)
 
-Khi tạo plan có liên quan thư viện bên ngoài, **NÊN verify API feasibility**:
+Khi tạo plan có liên quan thư viện bên ngoài, **PHẢI verify API feasibility**:
 
 | Khi nào | Hành động |
 |---------|-----------|
@@ -62,7 +62,8 @@ Khi tạo plan có liên quan thư viện bên ngoài, **NÊN verify API feasibi
 | Plan dùng API cụ thể | `query-docs(id, "method or feature")` → verify API tồn tại |
 | Version constraints | Check docs cho breaking changes giữa versions |
 
-> **Lý do**: Plan dựa trên API không tồn tại → executor sẽ fail → lãng phí thời gian.
+> **HARD RULE (v3.3)**: Kết quả tra PHẢI ghi vào `<context7-checklist>` trong plan template.
+> Nếu plan dùng thư viện ngoài mà `<context7-checklist>` trống → plan KHÔNG ĐƯỢC lưu.
 > Context7 giúp planner tạo plan chính xác với API thật.
 
 ## Serena Symbolic Tools (for Research)

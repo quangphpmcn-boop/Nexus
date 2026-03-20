@@ -70,6 +70,29 @@ Verify plans work together:
 - So sánh API usage trong code vs docs hiện tại → phát hiện deprecated/breaking changes
 - Track vào MCP Tools: `context7 ({library}: API verification)`
 
+### Step 3.5: Context7 Compliance Check (BẮT BUỘC)
+
+> Kiểm tra xem thư viện ngoài có được tra Context7 đầy đủ trong quá trình plan + execute.
+
+1. **Scan dependency files** → liệt kê tất cả thư viện ngoài (requirements.txt, package.json, etc.)
+2. **Đọc Context7 checklist** → `.nexus/memory/context7-checklist.md`
+3. **Cross-reference plan files** → kiểm tra `<context7-checklist>` đã điền cho mỗi plan
+4. **Cross-reference usage log** → `.nexus/logs/usage-log.md` field `MCP Tools` có `context7` entries
+5. **Tính compliance score**:
+
+```
+Context7 Compliance: {X}/{Y} thư viện đã tra ({Z}%)
+  🔴 Chưa tra: {danh sách thư viện bị thiếu}
+  ✅ Đã tra: {danh sách thư viện đã check}
+```
+
+6. **Verdict**:
+   - Score ≥ 80% → ✅ PASS
+   - Score 50-79% → ⚠️ WARNING — liệt kê thư viện bị bỏ sót, khuyến nghị tra bổ sung
+   - Score < 50% → 🔴 FAIL — yêu cầu quay lại tra Context7 cho thư viện quan trọng
+
+> Compliance Check KHÔNG block verification — advisory, nhưng hiển thị cho user biết.
+
 ### Step 4: Quality Gate
 Invoke Reviewer agent → **track agent**:
 - Code quality review on changed files

@@ -65,6 +65,50 @@ Hiện bảng status:
 > - **Pencil**: BẮT BUỘC cho `/design`. Nếu Pencil ❌ → cảnh báo: "⚠️ Pencil MCP không khả dụng — `/design` sẽ không thể chạy. Kiểm tra MCP config và khởi động lại Pencil server."
 > - Serena, Context7: Nếu unavailable → ghi nhận, tiếp tục. Framework có fallback.
 
+### Step 2.5: Context7 Library Scan (AUTO — nếu Context7 Active)
+
+Nếu Context7 ✅ từ Step 2, tự động scan dependency files để tạo checklist tra cứu:
+
+1. **Scan dependency files** theo tech stack:
+
+| File | Loại |
+|------|------|
+| `requirements.txt` / `pyproject.toml` | Python |
+| `package.json` (dependencies + devDependencies) | Node.js |
+| `pubspec.yaml` | Flutter/Dart |
+| `Cargo.toml` | Rust |
+| `go.mod` | Go |
+
+2. **Phân loại thư viện** theo mức tra cứu:
+
+| Mức | Tiêu chí | Ví dụ |
+|-----|----------|-------|
+| 🔴 BẮT BUỘC | Framework chính, API phức tạp, version-specific | FastAPI, React, Tauri, google-genai |
+| 🟡 NÊN | Utility có API riêng, breaking changes possible | openpyxl, docxtpl, Tailwind v4 |
+| 🔵 OPTIONAL | Đơn giản, ít thay đổi | lucide-react, python-multipart |
+
+3. **Ghi checklist** vào `.nexus/memory/context7-checklist.md`:
+
+```markdown
+# Context7 Library Checklist
+
+Tạo bởi /start — {YYYY-MM-DD}
+
+| Library | Version | Mức | Đã tra? |
+|---------|---------|-----|:-------:|
+| fastapi | standard | 🔴 | ⬜ |
+| react | ^18.2.0 | 🔴 | ⬜ |
+| ...     | ...     | ... | ...    |
+```
+
+4. **Hiện tóm tắt** trong output:
+
+```
+📚 Context7 Checklist: {N} thư viện cần tra (🔴 {X} bắt buộc, 🟡 {Y} nên, 🔵 {Z} optional)
+```
+
+> Nếu Context7 ❌ → bỏ qua bước này, ghi note: "⚠️ Context7 N/A — library checks sẽ dùng training data."
+
 ### Step 3: Serena Project Registration
 
 Nếu Serena active (từ Step 2):

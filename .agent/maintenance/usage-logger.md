@@ -86,7 +86,7 @@ TRACKING CHECKLIST (cập nhật liên tục):
 | **Skills** | flutter-expert, python-pro, systematic-debugging |
 | **Workflows** | execute.md |
 | **Memory** | read(task-board.md), write(progress-executor.md), write(results-1-1.md) |
-| **MCP Tools** | find_symbol, replace_symbol_body, get-library-docs(fluent_ui) |
+| **MCP Tools** | find_symbol, replace_symbol_body, context7 (fastapi: lifespan pattern), context7 (react-router: v7 API) |
 | **Protocols** | bilingual, guide, elicitation, context-loading |
 
 **Kết quả**: 4/5 tasks completed | 1 error | 4 commits
@@ -123,6 +123,7 @@ Trước khi append vào `usage-log.md`, agent PHẢI tự kiểm tra:
 - [ ] Agents: liệt kê ĐỦ agent đã invoke? (không chỉ "executor")
 - [ ] Skills: liệt kê ĐỦ domain skills? ⛔ **Nếu ghi "nexus" → SAI, phải thay bằng domain skill cụ thể**
 - [ ] MCP Tools: liệt kê ĐỦ tool names đã gọi? (find_symbol, query-docs, etc.)
+- [ ] **Context7 Check**: nếu task dùng thư viện ngoài → MCP Tools CÓ chứa `context7 ({library})` entries? ⛔ Nếu thiếu → bổ sung hoặc ghi `⚠️ Context7 N/A`
 - [ ] Memory: liệt kê ĐỦ read/write/edit operations?
 - [ ] Protocols: liệt kê ĐỦ _shared/ protocols đã load?
 - [ ] Bảng Chi tiết Tasks: CÓ cột "Sự cố & Fix"?

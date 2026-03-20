@@ -338,7 +338,7 @@ MCP (Model Context Protocol) mở rộng khả năng của AI bằng cách kết
 
 > **Fallback**: Nếu Serena không khả dụng → fall back sang file-based operations.
 
-### Context7 — Library Documentation
+### Context7 — Library Documentation (Enforcement v3.3)
 
 | Khả năng | Tool | Mô tả |
 |----------|------|-------|
@@ -350,7 +350,23 @@ MCP (Model Context Protocol) mở rộng khả năng của AI bằng cách kết
 - Unsure về API → query specific method
 - Version mismatch → check breaking changes
 
-> **Fallback**: Nếu Context7 không khả dụng → dùng training knowledge.
+**Enforcement Rules (v3.3):**
+
+| Cấp | Khi nào | Hành vi |
+|-----|---------|---------|
+| 🔴 BẮT BUỘC | Framework chính, API phức tạp | PHẢI tra trước khi code |
+| 🟡 KHUYẾN NGHỊ | Utility có API riêng | NÊN tra, bỏ qua cần ghi lý do |
+| 🔵 OPTIONAL | Thư viện đơn giản | Gọi nếu cần |
+
+**Enforcement chain:**
+```
+/start → Auto-scan dependencies → Tạo context7-checklist.md
+/plan  → Auto-detect gate → ⛔ Block nếu chưa tra Context7
+/execute → HARD RULE → Đọc checklist trước khi code
+/verify → Compliance Check → Tính score, flag nếu < 50%
+```
+
+> **Fallback**: Nếu Context7 không khả dụng → dùng training knowledge, ghi note `⚠️ Context7 N/A`.
 
 ### Pencil — IDE-Native Vector Design
 

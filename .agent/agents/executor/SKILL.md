@@ -64,6 +64,7 @@ When encountering errors:
 | Debug lỗi liên quan thư viện | Verify API signature đúng version |
 
 > **Auto-invoke**: Khi viết import cho library ngoài stdlib → gọi Context7 TRƯỚC khi code.
+> **Cross-reference**: Đọc `<context7-checklist>` trong plan file — nếu library đã tra → dùng kết quả, không tra lại.
 > **Skip**: CHỈ khi Context7 unavailable — dùng training data nhưng ghi note `⚠️ Context7 N/A, used training data for {library}`.
 
 ## Serena Symbolic Tools (Preferred)

@@ -61,12 +61,17 @@ For each wave (in order):
 For each plan in current wave:
 
 1. **Load plan** — read XML structure
-2. **Context7 Lookup (BẮT BUỘC nếu dùng thư viện ngoài)**:
-   - Scan task description → xác định thư viện/framework bên ngoài sẽ dùng (vd: Tauri API, TanStack Table, Shadcn, python-docx, openpyxl...)
-   - **Nếu có thư viện ngoài** → gọi `resolve-library-id` + `query-docs` để verify API chính xác
+2. **Context7 Enforcement (BẮT BUỘC nếu dùng thư viện ngoài)**:
+   - ⛔ **HARD RULE**: KHÔNG viết code import thư viện ngoài mà chưa tra Context7
+   - **Quy trình:**
+     a. Đọc `<context7-checklist>` trong plan file → kiểm tra thư viện đã tra chưa
+     b. Nếu library **đã tra** trong plan → dùng kết quả đó (không tra lại)
+     c. Nếu library **chưa tra** (thiếu trong checklist) → gọi `resolve-library-id` + `query-docs` TRƯỚC khi code
+     d. Ghi kết quả mới vào checklist plan + update `.nexus/memory/context7-checklist.md`
    - **Ưu tiên tra cứu khi**: dùng API lần đầu, version mới, plugin ít phổ biến, hoặc API có breaking changes
    - **Được bỏ qua khi**: HTML/CSS/JS thuần, logic nghiệp vụ nội bộ, CRUD patterns cơ bản không dùng thư viện đặc biệt
-   - → **Track** vào MCP Tools checklist: `context7 ({library}: {query summary})`
+   - → **Track BẮT BUỘC** vào MCP Tools checklist: `context7 ({library}: {query summary})`
+   - → Nếu Context7 unavailable: ghi `⚠️ Context7 N/A, used training data for {library}`
 3. **Select agent** — use `skill-routing.md` to pick appropriate agent → **track agent name**
 4. **Compose prompt** — use `.agent/orchestration/subagent-prompt.md`
 5. **Execute tasks** — iterate through `<task>` elements → **track skills/MCP tools used**

@@ -23,15 +23,26 @@ Understand what this phase needs to deliver:
 - What exists already (if building on previous phases)
 - Dependencies on external systems or prior work
 
-### Step 1.3: Context7 Lookup (BẮT BUỘC nếu dùng thư viện ngoài)
+### Step 1.3: Context7 Auto-Detect Gate (BẮT BUỘC)
 
-Scan requirements và tech stack cho phase này:
-1. Xác định thư viện/framework bên ngoài sẽ dùng trong phase
-2. **Nếu có thư viện ngoài** → gọi `resolve-library-id` + `query-docs` để verify API patterns trước khi tạo plan
-3. **Ưu tiên tra cứu khi**: API phức tạp, version-specific behavior, plugin ít phổ biến
-4. **Được bỏ qua khi**: logic nghiệp vụ nội bộ thuần, không dùng thư viện
+> ⛔ **HARD RULE**: Nếu plan dùng thư viện ngoài mà KHÔNG tra Context7 → plan **KHÔNG ĐƯỢC lưu**.
+
+**Auto-detect quy trình:**
+
+1. **Scan dependency files** → lấy danh sách thư viện ngoài từ `requirements.txt`, `package.json`, `pubspec.yaml`, etc.
+2. **Đọc checklist** từ `.nexus/memory/context7-checklist.md` (nếu có — tạo bởi `/start`)
+3. **Với mỗi thư viện mức 🔴 BẮT BUỘC** → gọi `resolve-library-id` + `query-docs` ngay lập tức
+4. **Với mỗi thư viện mức 🟡 NÊN** → gọi Context7 nếu plan dùng API phức tạp của thư viện đó
+5. **Ghi kết quả** vào `<context7-checklist>` trong plan template (xem `templates/plan.md`)
+6. **Cập nhật checklist** → mark ✅ cho thư viện đã tra trong `.nexus/memory/context7-checklist.md`
+
+**Được bỏ qua KHI VÀ CHỈ KHI:**
+- Logic nghiệp vụ nội bộ thuần, không dùng thư viện
+- Context7 MCP unavailable → ghi note `⚠️ Context7 N/A, used training data for {library}`
+- Thư viện mức 🔵 OPTIONAL với API đơn giản
 
 > Kết quả tra cứu dùng để plan chính xác hơn — tránh plan sai API signatures.
+> Kết quả PHẢI được ghi vào `<context7-checklist>` trong plan — không ghi = plan bị reject.
 
 ### Step 1.5: Implementation Choices (Elicitation)
 

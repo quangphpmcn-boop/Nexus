@@ -2,7 +2,7 @@
 
 > File này được Antigravity tự động đọc mỗi phiên làm việc.
 
-Dự án này sử dụng **Nexus Framework v3.1** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
+Dự án này sử dụng **Nexus Framework v3.3** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
 
 ## Chế độ Song ngữ
 - Giao tiếp với tôi bằng **tiếng Việt**
@@ -38,6 +38,7 @@ Luôn tuân theo chu trình Nexus:
 9. **Claim Audit before done (v2.1)** — Evidence table (CONFIRMED/UNCONFIRMED/CONTRADICTED)
 10. **Scope Guard (v2.1)** — git diff vs plan sau mỗi wave
 11. **Critical functions (v2.1)** — Nếu `.nexus/critical-functions.md` tồn tại → đọc trước khi edit
+12. **Context7 Enforcement (v3.3)** — Dùng thư viện ngoài PHẢI tra Context7 trước khi code. Ghi vào `<context7-checklist>` trong plan.
 
 ## Trạng thái Dự án
 - `.nexus/state.md` — ĐỌC ĐẦU TIÊN mỗi phiên làm việc
@@ -58,5 +59,5 @@ Luôn tuân theo chu trình Nexus:
 | MCP Server | Mục đích |
 |-----------|---------|
 | **Serena** | Memory liên agent, symbolic code analysis |
-| **Context7** | Tra cứu docs thư viện, API reference mới nhất |
+| **Context7** | Tra cứu docs thư viện, API reference mới nhất. **Bắt buộc** khi dùng thư viện ngoài (v3.3) |
 | **Pencil** | Vector design trong IDE, design↔code sync, .pen files |

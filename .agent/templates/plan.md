@@ -22,6 +22,13 @@ gap_closure: false
   <mcp>[Context7: tra API docs | Serena: symbolic analysis | Pencil: design trong .pen — nếu cần]</mcp>
 </resources>
 
+<context7-checklist>
+  <!-- BẮT BUỘC nếu plan dùng thư viện ngoài. Nếu không dùng: <none/> -->
+  <!-- Format mỗi dòng: {library} | {query} | {kết quả tóm tắt} -->
+  <!-- Ví dụ: fastapi | lifespan pattern | Dùng @asynccontextmanager, deprecated on_event -->
+  <!-- Ví dụ: react-router | v7 createBrowserRouter | Dùng RouterProvider, không dùng BrowserRouter -->
+</context7-checklist>
+
 <tasks>
 
 <task type="auto">
