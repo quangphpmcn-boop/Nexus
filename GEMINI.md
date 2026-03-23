@@ -2,7 +2,7 @@
 
 > File này được Antigravity tự động đọc mỗi phiên làm việc.
 
-Dự án này sử dụng **Nexus Framework v3.5** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
+Dự án này sử dụng **Nexus Framework v3.6** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
 
 ## Chế độ Song ngữ
 - Giao tiếp với tôi bằng **tiếng Việt**
@@ -12,20 +12,21 @@ Dự án này sử dụng **Nexus Framework v3.5** — framework phát triển a
 Luôn tuân theo chu trình Nexus:
 1. `/init` → Khởi tạo dự án
 2. `/design [phase]` → Thiết kế UI/UX (4 stages: Foundation → Screens → Components → Mockup) với 4-Proposal Multi-Engine
-3. `/plan [phase]` → Lập kế hoạch phase
-4. `/execute [phase]` → Thực thi kế hoạch
-5. `/verify [phase]` → Xác minh kết quả
-6. `/review [scope]` → Kiểm tra chất lượng
-7. `/audit [scope]` → Kiểm tra toàn diện (security, code, accessibility)
-8. `/quick` → Xử lý tác vụ nhanh
-9. `/progress` → Xem tiến độ
-10. `/guide` → Hướng dẫn bước tiếp theo
-11. `/health` → Kiểm tra sức khỏe framework
-12. `/start` → Khởi đầu phiên làm việc
-13. `/end` → Kết thúc phiên làm việc
-14. `/learn` → Extract patterns từ session vào reasoning-bank
-15. `/evolve` → Cluster patterns → suggest skill amendments
-16. `/sync-knowledge` → Sync kiến thức từ dự án về source framework
+3. `/clarify [phase]` → Làm rõ yêu cầu trước planning (hỏi-đáp có cấu trúc)
+4. `/plan [phase]` → Lập kế hoạch phase
+5. `/execute [phase]` → Thực thi kế hoạch
+6. `/verify [phase]` → Xác minh kết quả
+7. `/review [scope]` → Kiểm tra chất lượng
+8. `/audit [scope]` → Kiểm tra toàn diện (security, code, accessibility)
+9. `/quick` → Xử lý tác vụ nhanh
+10. `/progress` → Xem tiến độ
+11. `/guide` → Hướng dẫn bước tiếp theo
+12. `/health` → Kiểm tra sức khỏe framework
+13. `/start` → Khởi đầu phiên làm việc
+14. `/end` → Kết thúc phiên làm việc
+15. `/learn` → Extract patterns từ session vào reasoning-bank
+16. `/evolve` → Cluster patterns → suggest skill amendments
+17. `/sync-knowledge` → Sync kiến thức từ dự án về source framework
 
 ## Quy tắc Bắt buộc
 1. **Ghi log đúng FORMAT** → `.agent/maintenance/usage-logger.md`
@@ -42,6 +43,8 @@ Luôn tuân theo chu trình Nexus:
 12. **Context7 Enforcement (v3.3)** — Dùng thư viện ngoài PHẢI tra Context7 trước khi code. Ghi vào `<context7-checklist>` trong plan.
 13. **4-Proposal Multi-Engine (v3.4)** — `/design` tạo 4 proposals tách biệt (Pencil + UI-UX-Pro-Max + Stitch + Taste-Skill). Stitch MCP bắt buộc.
 14. **Knowledge Sync (v3.5)** — `/end` tự động sync reasoning-bank về source framework. `/sync-knowledge` để sync thủ công.
+15. **Clarify before plan (v3.6)** — Khuyến nghị `/clarify` trước `/plan` để giảm rework. Generates `clarifications.md` per-phase.
+16. **Phantom detection (v3.6)** — `/verify` tự động phát hiện tasks đánh dấu done nhưng không có implementation thực sự.
 
 ## Trạng thái Dự án
 - `.nexus/state.md` — ĐỌC ĐẦU TIÊN mỗi phiên làm việc
@@ -50,7 +53,7 @@ Luôn tuân theo chu trình Nexus:
 - `.nexus/requirements.md` — yêu cầu đã phạm vi hóa
 
 ## Framework
-- `.agent/workflows/` — 16 workflow definitions
+- `.agent/workflows/` — 17 workflow definitions
 - `.agent/skills/` — 119 skills thuộc 14 danh mục (Antigravity auto-discover)
 - `.agent/agents/` — 6 agents + 13 shared protocols
 - `.agent/orchestration/` — Orchestrator và memory schema

@@ -15,6 +15,7 @@ description: Xác minh công việc hoàn thành — kiểm tra tự động + n
 - Read `_shared/skill-enforcement.md` → skill check
 - Read `_shared/behavioral-rules.md` → file discipline, code integrity
 - **Memory read**: `.nexus/memory/results-{phase}-{wave}.md` (nếu tồn tại)
+- **Spec read (v3.6)**: `.nexus/phases/phase-{N}/spec.md` (nếu tồn tại) → dùng cho requirement coverage check và spec drift detection
 
 ## Steps
 
@@ -107,6 +108,33 @@ Identify any gaps:
 - Technical debt introduced → log as todo
 
 > Gaps found → document in gap analysis for future phases.
+
+### Step 5.3: Phantom Completion Detection (v3.6)
+
+> Inspired by spec-kit `verify-tasks`. Phát hiện tasks đánh dấu `[x]` nhưng không có implementation thực sự.
+
+1. **Load task board**: đọc `.nexus/memory/task-board.md` → liệt kê tasks đánh dấu `[x]`
+2. **Load plans**: đọc plan XML files → extract `<files>` tag cho mỗi task
+3. **Cross-check** với actual changes:
+   - `git diff --stat HEAD~{N}` — file thuộc task có thay đổi thực sự?
+   - Kiểm tra files khai báo trong `<files>` tag tồn tại trên disk?
+   - `<verify>` step — có evidence đã run? (evidence trong log hoặc summaries)
+4. **Tạo Phantom Detection Table**:
+
+```
+### Phantom Detection — Phase {N}
+| Task | Planned Files | Changed? | Verify Evidence? | Status |
+|------|--------------|----------|------------------|--------|
+| Task 1 | src/api.py | ✅ Yes | ✅ Yes | REAL |
+| Task 2 | src/model.py | ❌ No | ❌ No | PHANTOM |
+```
+
+5. **Verdict**:
+   - 0 PHANTOM → skip silently
+   - 1+ PHANTOM → `⚠️ Phantom completion detected: [task names]. Re-verify or un-mark.`
+   - PHANTOM tasks PHẢI được giải quyết trước khi Claim Audit (Step 5.5)
+
+> **Khi nào skip**: không có `task-board.md`, không dùng git, hoặc plan không có `<files>` tags.
 
 ### Step 5.5: Claim Audit (BẮT BUỘC — v2.1)
 

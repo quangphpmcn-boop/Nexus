@@ -128,7 +128,7 @@ else {
         }
     }
 
-    Write-Host "    • workflows/ (16) • skills/ (119)" -ForegroundColor DarkGray
+    Write-Host "    • workflows/ (17) • skills/ (119)" -ForegroundColor DarkGray
     Write-Host "    • agents/ (6+13)  • orchestration/" -ForegroundColor DarkGray
     Write-Host "    • maintenance/    • templates/ (10)" -ForegroundColor DarkGray
     Write-Host "    • knowledge/      • rules/" -ForegroundColor DarkGray
@@ -251,7 +251,7 @@ Write-Host "━━━ Bước 3/3: Tóm tắt & Hướng dẫn ━━━" -Foreg
 Write-Host ""
 
 $installed = @()
-if (Test-Path (Join-Path $ProjectPath ".agent\workflows")) { $installed += "Workflows (16)" }
+if (Test-Path (Join-Path $ProjectPath ".agent\workflows")) { $installed += "Workflows (17)" }
 if (Test-Path (Join-Path $ProjectPath ".agent\skills\nexus")) { $installed += "Skills (119)" }
 if (Test-Path (Join-Path $ProjectPath ".agent\agents")) { $installed += "Agents (6+13)" }
 if (Test-Path (Join-Path $ProjectPath ".agent\rules")) { $installed += "Rules" }

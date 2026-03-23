@@ -21,6 +21,8 @@ Discover all plans in `.nexus/phases/phase-{N}/`:
 - Verify all plans exist and are valid
 - Check if any plans already completed (resume support)
 - **Memory read**: đọc `.nexus/memory/task-board.md` (nếu tồn tại) → biết plans nào đã chạy, plans nào chờ
+- **Spec read (v3.6)**: đọc `.nexus/phases/phase-{N}/spec.md` (nếu tồn tại) → functional context cho execution
+- **Research read (v3.6)**: đọc `.nexus/phases/phase-{N}/research.md` (nếu tồn tại) → tech decisions & Context7 findings
 
 **Initialize tracking checklist** (duy trì suốt quá trình):
 ```
@@ -109,7 +111,28 @@ For each plan in current wave:
    - 3+ out-of-scope → `🔴 Significant scope creep detected: [files]. Review before continuing.`
 6. **Advisory only** — warn user, KHÔNG block execution
 
-> Overhead: ~200 tokens. Skip nếu không có git hoặc chưa có commits.
+**Spec Drift Detection (v3.6)** — nếu `spec.md` tồn tại:
+
+7. **Extract expected behaviors**: đọc `spec.md` → liệt kê features/behaviors expected
+8. **Extract implemented behaviors**: đọc summaries của plans đã execute trong wave → liệt kê features/behaviors implemented
+9. **Compare**:
+   - **MATCHED**: spec feature có implementation tương ứng
+   - **DRIFT**: implementation khác spec (naming diff, behavior khác, thêm/bớt logic)
+   - **MISSING**: spec yêu cầu nhưng implementation không có
+   - **EXTRA**: implementation có nhưng spec không nói
+10. **Severity**:
+    - `INFO` — minor naming/structure diff
+    - `WARNING` — behavior drift (feature hoạt động khác spec)
+    - `CRITICAL` — missing feature (spec yêu cầu nhưng hoàn toàn thiếu)
+11. **Report format**:
+    ```
+    Scope Guard + Spec Drift — Wave {N}:
+    - File scope: {X} in-scope, {Y} out-of-scope
+    - Spec drift: {A} matched, {B} drifted, {C} missing, {D} extra
+    ```
+12. **Advisory** — report cho user, KHÔNG block. Nếu có CRITICAL → khuyến nghị fix trước wave tiếp theo.
+
+> Skip Spec Drift nếu `spec.md` không tồn tại (backward-compatible).
 
 ### Step 3: Create Summaries
 For each completed plan:

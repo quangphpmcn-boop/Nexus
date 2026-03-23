@@ -23,6 +23,25 @@ Understand what this phase needs to deliver:
 - What exists already (if building on previous phases)
 - Dependencies on external systems or prior work
 
+### Step 1.2: Generate Phase Spec & Research (v3.6)
+
+> Inspired by spec-kit: tách biệt "what/why" (spec) vs "how" (plan).
+
+1. **Generate** `.nexus/phases/phase-{N}/spec.md`:
+   - Extract requirements thuộc phase từ `requirements.md`
+   - Tóm tắt what (chức năng) và why (giá trị mang lại)
+   - Include acceptance criteria cho mỗi requirement
+   - Include clarifications (nếu đã chạy `/clarify`)
+   - **KHÔNG chứa** tech stack decisions — chỉ functional specification
+
+2. **Generate** `.nexus/phases/phase-{N}/research.md`:
+   - Tech stack rationale (từ Step 1.5 Elicitation)
+   - Context7 findings (từ Step 1.3)
+   - Alternatives considered & rejected (với lý do)
+   - Known constraints & risks
+
+> Các plans PHẢI reference `spec.md` khi implement. `research.md` là tài liệu hỗ trợ.
+
 ### Step 1.3: Context7 Auto-Detect Gate (BẮT BUỘC)
 
 > ⛔ **HARD RULE**: Nếu plan dùng thư viện ngoài mà KHÔNG tra Context7 → plan **KHÔNG ĐƯỢC lưu**.
@@ -109,6 +128,22 @@ Invoke Reviewer agent to verify:
 - [ ] No circular dependencies between plans
 - [ ] Verification steps defined for each plan
 - [ ] Reasoning-bank patterns considered
+
+**Enhanced Validation (v3.6)** — 3 kiểm tra bổ sung:
+
+1. **Over-engineering detection**: Scan mỗi plan cho:
+   - Abstractions không cần thiết (abstract factory khi chỉ 1 implementation, caching khi chưa có performance req)
+   - Components/services không được yêu cầu bởi requirements
+   - Premature optimization → hỏi justification hoặc simplify
+   - Output: `⚠️ Potential over-engineering: [component] — not required by any REQ-xxx`
+
+2. **Technology audit**: Kiểm tra tech stack decisions:
+   - Mọi framework/library choice có justification từ Step 1.5 Elicitation?
+   - AI tự chọn tech mà user chưa specify? → flag `⚠️ Implicit tech choice: [lib] — verify with user`
+
+3. **Principles compliance**: So sánh plan với `project.md` section Principles:
+   - Plan vi phạm nguyên tắc đã định? (VD: principles nói "minimal dependencies" nhưng plan thêm 5 thư viện)
+   - Output: `✅ Aligned` hoặc `⚠️ Tension: [principle] vs [plan decision]`
 
 ### Step 4.5: Quick Challenge (Opt-in — v2.1)
 
