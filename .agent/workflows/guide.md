@@ -28,7 +28,7 @@ Based on current state:
 | State | Available Actions |
 |-------|------------------|
 | Ready to design | `/design [N]`, `/plan [N]` (skip design), `/quick`, `/evolve`¹ |
-| Ready to plan | `/plan [N]`, `/quick`, `/review`, `/evolve`¹ |
+| Ready to plan | `/clarify [N]` (khuyến nghị), `/plan [N]`, `/quick`, `/review`, `/evolve`¹ |
 | Plans created | `/execute [N]`, `/review`, adjust plans |
 | Execution in progress | Resume execution, `/quick`, `/progress` |
 | Phase executed | `/verify [N]`, `/review`, `/audit`³, `/quick` |
@@ -56,9 +56,9 @@ Khi user hỏi "nên làm gì?" hoặc khi `/guide` tự chạy, **đánh giá c
 | Score | Suggested Workflow | Rationale |
 |-------|-------------------|-----------|
 | 0-2 | `/quick` | Simple task, under 10 phút |
-| 3-5 | `/plan [N]` (1 wave) | Moderate task, cần plan nhưng không cần design |
-| 6-8 | `/plan → /execute → /verify` | Complex task, full execution cycle |
-| 9-10 | `/design → /plan → /execute → /verify → /audit → /review` | Critical task, cần toàn bộ lifecycle + audit |
+| 3-5 | `/clarify [N]` → `/plan [N]` (1 wave) | Moderate task, cần clarify + plan |
+| 6-8 | `/clarify → /plan → /execute → /verify` | Complex task, full execution cycle |
+| 9-10 | `/design → /clarify → /plan → /execute → /verify → /audit → /review` | Critical task, cần toàn bộ lifecycle + audit |
 
 > **Lưu ý /evolve**: Với score 6+, nếu reasoning-bank có skill candidates → gợi ý `/evolve` trước `/design` hoặc `/plan` để skills up-to-date.
 

@@ -14,6 +14,7 @@ description: Lập kế hoạch phase — tạo kế hoạch thực thi nguyên 
 - Read `.nexus/phases/phase-{N}/design/design-brief.md` (if exists) → incorporate design specs
 - Read `.agent/agents/_shared/mcp-protocol.md` → use Context7 for library API lookup
 - Read `.nexus/memory/reasoning-bank.json` (if exists) → check similar patterns for approach suggestions
+- Read `.nexus/phases/phase-{N}/clarifications.md` (if exists) → incorporate clarified requirements (v3.6)
 
 ## Steps
 
@@ -197,6 +198,9 @@ Present plan summary to user (in `user_language`):
 Save to `.nexus/phases/phase-{N}/`:
 ```
 phase-{N}/
+├── spec.md              ← (v3.6) functional specification
+├── research.md          ← (v3.6) tech decisions & Context7 findings
+├── clarifications.md    ← (v3.6) from /clarify, if run
 ├── phase-{N}-1-PLAN.md
 ├── phase-{N}-2-PLAN.md
 ├── phase-{N}-3-PLAN.md

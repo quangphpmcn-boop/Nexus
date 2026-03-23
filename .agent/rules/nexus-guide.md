@@ -18,10 +18,12 @@ Dự án này sử dụng **Nexus Framework** — framework phát triển agenti
 |-------|-------|--------------------|
 | `/init` | Khởi tạo dự án | PLANNING |
 | `/design [phase]` | Thiết kế UI/UX | ALL |
+| `/clarify [phase]` | Làm rõ yêu cầu trước planning | PLANNING |
 | `/plan [phase]` | Lập kế hoạch | PLANNING |
 | `/execute [phase]` | Thực thi | EXECUTION |
 | `/verify [phase]` | Xác minh | VERIFICATION |
 | `/review [scope]` | Kiểm tra chất lượng | VERIFICATION |
+| `/audit [scope]` | Kiểm tra toàn diện | VERIFICATION |
 | `/quick` | Tác vụ nhanh | EXECUTION |
 | `/start` | Khởi đầu phiên làm việc | — |
 | `/end` | Kết thúc phiên làm việc | — |
@@ -30,6 +32,7 @@ Dự án này sử dụng **Nexus Framework** — framework phát triển agenti
 | `/health` | Kiểm tra sức khỏe framework | — |
 | `/learn` | Extract patterns từ session | — |
 | `/evolve` | Cluster patterns → suggest skill amendments | — |
+| `/sync-knowledge` | Sync kiến thức về source framework | — |
 
 ## Quy tắc Bắt buộc
 
@@ -46,6 +49,9 @@ Dự án này sử dụng **Nexus Framework** — framework phát triển agenti
 11. **Critical functions (v2.1)** — Nếu `.nexus/critical-functions.md` tồn tại → đọc trước khi edit
 12. **Context7 Enforcement (v3.3)** — Dùng thư viện ngoài PHẢI tra Context7 trước khi code
 13. **4-Proposal Multi-Engine (v3.4)** — `/design` tạo 4 proposals tách biệt (Pencil + UI-UX-Pro-Max + Stitch + Taste-Skill). Stitch MCP bắt buộc.
+14. **Knowledge Sync (v3.5)** — `/end` tự động sync reasoning-bank về source framework
+15. **Clarify before plan (v3.6)** — Khuyến nghị `/clarify` trước `/plan` để giảm rework
+16. **Phantom detection (v3.6)** — `/verify` tự động phát hiện tasks đánh dấu done nhưng không có implementation
 
 ## Trạng thái Dự án
 - `.nexus/state.md` — ĐỌC ĐẦU TIÊN mỗi phiên
@@ -53,9 +59,9 @@ Dự án này sử dụng **Nexus Framework** — framework phát triển agenti
 - `.nexus/project.md` — tầm nhìn, tech stack
 
 ## Framework Location
-- `.agent/workflows/` — 15 workflows
+- `.agent/workflows/` — 17 workflows
 - `.agent/skills/` — 119 skills (auto-discover)
-- `.agent/agents/` — 6 agents + 14 protocols
+- `.agent/agents/` — 6 agents + 13 shared protocols
 - `.agent/orchestration/` — Orchestrator
 - `.agent/maintenance/` — Logging + self-learning
 - `.agent/templates/` — Project templates
