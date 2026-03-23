@@ -23,6 +23,7 @@ Understand what this phase needs to deliver:
 - Which requirements (REQ-xxx) map to this phase
 - What exists already (if building on previous phases)
 - Dependencies on external systems or prior work
+- **ck semantic search (v3.6.1)**: nếu ck khả dụng → `semantic_search("similar to [feature]")` để tìm code patterns tương tự đã có
 
 ### Step 1.2: Generate Phase Spec & Research (v3.6)
 

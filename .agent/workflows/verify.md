@@ -65,6 +65,7 @@ Verify plans work together:
 - API contracts match between consumer and provider
 - No broken imports or references
 - If design exists: UI matches wireframes, design tokens, responsive breakpoints
+- **ck integration scan (v3.6.1)**: nếu ck khả dụng → `semantic_search("breaks interface contract")` tìm breaking changes ngoài scope grep
 
 **Context7 API Verification** (BẮT BUỘC nếu code dùng thư viện ngoài):
 - Với thư viện chính trong phase → gọi `resolve-library-id` + `query-docs`

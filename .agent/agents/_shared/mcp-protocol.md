@@ -2,7 +2,7 @@
 
 ## Overview
 
-Nexus uses 4 MCP servers throughout the project lifecycle:
+Nexus uses 5 MCP servers throughout the project lifecycle:
 
 | MCP Server | Purpose | When Used |
 |-----------|---------|-----------|
@@ -10,6 +10,7 @@ Nexus uses 4 MCP servers throughout the project lifecycle:
 | **Context7** | Library docs lookup, version-specific API reference | Plan, Execute, Debug |
 | **Pencil** | Design inspiration + visual mockup, design↔code sync, .pen files | Design phase (BẮT BUỘC) |
 | **Stitch** | AI screen generation, rapid visual prototyping | Design phase (BẮT BUỘC) |
+| **ck** | Semantic code search — tìm code theo ý nghĩa, không chỉ keyword | Plan, Execute, Verify, Review |
 
 ---
 
@@ -316,6 +317,76 @@ Rules:
 
 ---
 
+## 6. ck — Semantic Code Search (v3.6.1)
+
+### Overview
+
+`ck` (seek) tìm code theo **ý nghĩa**, không chỉ keyword. Search "error handling" → tìm try/catch, error returns, exception handling dù code không chứa từ này. Local-first, không cần API key.
+
+> Bổ sung cho Serena (symbolic/exact) và grep (text/regex). ck là **OPTIONAL** — tất cả workflows hoạt động bình thường không có ck.
+
+### Tools
+
+| Tool | Purpose | Example |
+|------|---------|---------|
+| `semantic_search(query, path)` | Tìm code theo ý nghĩa dùng embeddings | `semantic_search("authentication logic")` |
+| `regex_search(pattern, path)` | Grep-style pattern matching | `regex_search("TODO.*fixme")` |
+| `hybrid_search(query, path)` | Kết hợp semantic + keyword (Reciprocal Rank Fusion) | `hybrid_search("async timeout")` |
+| `index_status(path)` | Kiểm tra trạng thái index | `index_status("./src")` |
+| `reindex(path)` | Force rebuild search index | `reindex("./")` |
+| `health_check()` | Server status và diagnostics | `health_check()` |
+
+### Usage per Workflow
+
+| Workflow | ck Usage |
+|----------|----------|
+| `/nexus:plan` | `semantic_search("similar to REQ-xxx feature")` — tìm code patterns tương tự đã có trong codebase |
+| `/nexus:execute` | `hybrid_search("existing implementation of X")` — tìm code có sẵn trước khi viết mới |
+| `/nexus:verify` | `semantic_search("breaks interface")` — detect breakage ngoài scope grep |
+| `/nexus:review` | `semantic_search("security vulnerability pattern")` — semantic security scan |
+| `/nexus:quick` | `hybrid_search("bug cause")` — tìm root cause nhanh hơn grep |
+
+### When to Use ck vs Serena vs grep
+
+| Scenario | ck | Serena | grep |
+|----------|:--:|:------:|:----:|
+| Tìm code theo ý nghĩa/khái niệm | ✅ Best | ❌ | ❌ |
+| Tìm symbol chính xác theo tên | ❌ | ✅ Best | ✅ OK |
+| Find all references to a function | ❌ | ✅ Best | ✅ OK |
+| Tìm code patterns liên quan (đồng nghĩa) | ✅ Best | ❌ | ❌ |
+| Rename/refactor symbol | ❌ | ✅ Best | ❌ |
+| Search non-code files (docs, config) | ✅ OK | ❌ | ✅ Best |
+
+### Configuration
+
+**Cài đặt:**
+```bash
+# Cài qua Cargo
+cargo install ck-search
+```
+
+**MCP Server:**
+```json
+{
+  "ck": {
+    "command": "ck",
+    "args": ["--serve"],
+    "cwd": "/path/to/codebase"
+  }
+}
+```
+
+### Performance
+
+- Index: ~1M LOC < 2 phút
+- Search: < 500ms
+- Delta indexing: 80-90% cache hit (chỉ re-embed chunks thay đổi)
+- Index size: ~2x source code
+
+> **Khi ck không khả dụng**: Fall back to Serena `search_for_pattern()` + Antigravity `grep_search`. Không block workflow.
+
+---
+
 ## MCP Configuration (for Antigravity IDE)
 
 Add to `~/.gemini/antigravity/mcp_config.json`:
@@ -346,6 +417,12 @@ Add to `~/.gemini/antigravity/mcp_config.json`:
         "--app", "antigravity"
       ],
       "env": {}
+    },
+    "ck": {
+      "command": "ck",
+      "args": ["--serve"],
+      "cwd": "PROJECT_ROOT_PATH",
+      "disabled": false
     }
   }
 }
@@ -371,6 +448,7 @@ All subsequent chat sessions will reuse the same Serena session.
 | Context7 | Docs | `resolve-library-id`, `query-docs` |
 | Pencil | Design | `batch_design`, `batch_get`, `get_screenshot`, `snapshot_layout`, `get_variables`, `set_variables`, `get_editor_state`, `get_guidelines`, `get_style_guide`, `export_nodes` |
 | Stitch | Design | `create_project`, `generate_screen_from_text`, `get_screen`, `list_screens`, `edit_screens`, `generate_variants`, `list_projects`, `get_project` |
+| ck | Semantic Search | `semantic_search`, `regex_search`, `hybrid_search`, `index_status`, `reindex`, `health_check` |
 
 ---
 

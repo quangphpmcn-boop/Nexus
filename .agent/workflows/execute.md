@@ -63,6 +63,7 @@ For each wave (in order):
 For each plan in current wave:
 
 1. **Load plan** — read XML structure
+   - **ck pre-check (v3.6.1)**: nếu ck khả dụng → `hybrid_search("existing [feature]")` tìm code có sẵn trước khi viết mới
 2. **Context7 Enforcement (BẮT BUỘC nếu dùng thư viện ngoài)**:
    - ⛔ **HARD RULE**: KHÔNG viết code import thư viện ngoài mà chưa tra Context7
    - **Quy trình:**

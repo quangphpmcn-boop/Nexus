@@ -68,3 +68,4 @@ Luôn tuân theo chu trình Nexus:
 | **Context7** | Tra cứu docs thư viện, API reference mới nhất. **Bắt buộc** khi dùng thư viện ngoài (v3.3) |
 | **Pencil** | Vector design trong IDE, design↔code sync, .pen files |
 | **Stitch** | AI screen generation, rapid visual prototyping. **Bắt buộc** trong /design (v3.4) |
+| **ck** | Semantic code search — tìm code theo ý nghĩa, không chỉ keyword. Optional (v3.6.1) |
