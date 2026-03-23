@@ -124,6 +124,18 @@ Cho mỗi cluster user dismissed:
 2. Patterns vẫn giữ nguyên trong patterns[]
 ```
 
+### Step 6.5: Sync Amendments to Source
+
+Nếu `nexus.json → evolution.sync_to_source.sync_skill_amendments` là `true`:
+
+```
+1. Kiểm tra .agent/.nexus-source tồn tại
+2. Chạy /sync-knowledge workflow — Step 3 (Sync Skill Amendments only)
+3. Log: "[Sync] Skill amendments synced to source"
+```
+
+> Đảm bảo amendments user vừa approve được sync ngay về source framework.
+
 ### Step 7: Confidence Decay Check
 
 ```

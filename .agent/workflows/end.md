@@ -105,6 +105,22 @@ Nếu `nexus.json → evolution.auto_learn_on_end` là `true`:
 
 > Auto-learn giúp reasoning-bank tự tích lũy patterns mà không cần user nhớ gọi `/learn` thủ công.
 
+### Step 2.9: Sync Knowledge to Source (Knowledge Backflow)
+
+Nếu `nexus.json → evolution.sync_to_source.enabled` là `true` VÀ `auto_sync_on_end` là `true`:
+
+```
+1. Kiểm tra .agent/.nexus-source tồn tại
+2. Nếu CÓ → chạy /sync-knowledge workflow (xem sync-knowledge.md)
+   - Sync reasoning-bank patterns (LUÔN LUÔN, dù 1 pattern)
+   - Sync skill amendments (nếu có)
+3. Log kết quả: "[Sync] {N} patterns synced to source"
+4. Nếu .nexus-source KHÔNG tồn tại → skip, log "Source path unknown, skip sync"
+```
+
+> Knowledge sync đảm bảo kiến thức tích lũy từ dự án không bị kẹt local.
+> Khác với `/evolve` — sync chạy KHÔNG cần threshold. Dù 1 pattern mới cũng sync.
+
 ### Step 3: Kiểm tra Git Status
 
 ```
@@ -130,6 +146,7 @@ Hiện summary cho user:
 📍 Dừng tại: [description]
 📋 Handover: .nexus/session-handover.md ✅
 📦 Git: [committed ✅ / ⚠️ N files chưa commit]
+🔄 Sync: [synced {N} patterns ✅ / ⏭️ skipped (no source)]
 
 ▶ Khi quay lại máy khác, gõ /start để tiếp tục.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

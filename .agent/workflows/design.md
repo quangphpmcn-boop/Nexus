@@ -1,5 +1,5 @@
 ---
-description: Thiết kế UI/UX cho phase — multi-stage design (Foundation → Screens → Components → Mockup) với Taste-Skill + Pencil MCP
+description: Thiết kế UI/UX cho phase — multi-stage design (Foundation → Screens → Components → Mockup) với 4-Proposal Multi-Engine (Pencil + UI-UX-Pro-Max + Stitch + Taste-Skill)
 ---
 
 # /nexus:design [phase-number]
@@ -17,31 +17,38 @@ Design workflow — creates visual design artifacts before planning and coding.
 > Design runs AFTER init (requirements exist) and BEFORE plan (technical tasks).
 > Not all phases need design — only phases with UI changes.
 
-## Design Engine
+## Design Engine — 4-Proposal Multi-Engine Architecture
 
 ```
-┌─────────────────────────────────────────────────────┐
-│ TASTE-SKILL (Tầng Triết lý - LUÔN HOẠT ĐỘNG)       │
-│ Anti-slop · Creative Arsenal · Configurable Dials   │
-│ AI Tells · Bias Correction · Motion Principles      │
-├─────────────────────────────────────────────────────┤
-│ PENCIL MCP (Tầng Visual - BẮT BUỘC)                │
-│ 🎯 Gợi ý: style guide · guidelines · inspiration   │
-│ 🖌️ Mockup: wireframes · components · full mockup    │
-│ 🔍 Kiểm tra: screenshot · layout check · export     │
-│ ⛔ Không có Pencil = DỪNG workflow → sửa MCP        │
-├─────────────────────────────────────────────────────┤
-│ UI-UX-PRO-MAX DB (Tầng Data - BỔ TRỢ)              │
-│ CSV database · Python search · palette/font lookup  │
-│ Pre-delivery checklist · accessibility rules        │
-└─────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────┐
+│ 4-PROPOSAL SYSTEM: Mỗi engine đề xuất 1 hướng thiết kế riêng biệt │
+├──────────────────┬──────────────────┬──────────────────┬────────────┤
+│ A. PENCIL        │ B. UI-UX-PRO-MAX │ C. STITCH AI     │ D. TASTE   │
+│    STYLE GUIDE   │    DB            │                  │    SKILL   │
+├──────────────────┼──────────────────┼──────────────────┼────────────┤
+│ Visual-driven    │ Data-driven      │ AI-generative    │ Philosophy │
+│ get_style_guide  │ CSV database     │ generate_screen  │ Creative   │
+│ get_guidelines   │ search.py        │ _from_text()     │ Arsenal    │
+│ Layout patterns  │ Industry best    │ Rapid visual     │ Anti-slop  │
+│ Visual trends    │ practices        │ concept          │ 3 Dials    │
+├──────────────────┴──────────────────┴──────────────────┴────────────┤
+│ SHARED: Pencil batch_design() → visual preview card cho mỗi engine │
+│ BẮT BUỘC: Pencil MCP (mockup) — Không có = DỪNG workflow          │
+│ BẮT BUỘC: Stitch MCP (proposal C) — Không có = DỪNG workflow       │
+│ BỔ TRỢ: Python (proposal B) — Không có = AI dùng built-in data    │
+└────────────────────────────────────────────────────────────────────-┘
 ```
+
+> **PATH NORMALIZATION (Windows — BẮT BUỘC):**
+> Mọi đường dẫn từ Pencil/Stitch tools PHẢI normalize `\` → `/` trước khi embed markdown.
+> Rule: `path.replace(/\\/g, '/')` — LUÔN LUÔN.
+> ❌ `![mockup](C:\Users\...)` → ✅ `![mockup](C:/Users/...)`
 
 ## Multi-Stage Design Process
 
 ```
-Stage 0: MCP Readiness Check  ─── kiểm tra Pencil + Python
-  → Pencil BẮT BUỘC — dừng nếu thiếu
+Stage 0: MCP Readiness Check  ─── kiểm tra Pencil + Stitch + Python
+  → Pencil + Stitch BẮT BUỘC — dừng nếu thiếu
 
 Stage 1: Foundation Design  ─── 1 lần per project (hoặc major redesign)
   → Phỏng vấn sâu → Taste dials → Design system → Visual preview Pencil
@@ -75,7 +82,7 @@ Stage 4: Visual Mockup  ─── full-fidelity trong Pencil
 ### Step 0: MCP Readiness Check (BẮT BUỘC)
 
 ```
-Step 0.1: Pencil MCP Health Check
+Step 0.1: Pencil MCP Health Check (BẮT BUỘC)
   → Gọi get_editor_state()
   → SUCCESS: ✅ Tiếp tục
   → FAIL: ⛔ DỪNG WORKFLOW
@@ -94,20 +101,30 @@ Step 0.1: Pencil MCP Health Check
     └──────────────────────────────────────────────┘
     → KHÔNG tiếp tục. KHÔNG tự mockup bằng HTML/image.
 
-Step 0.2: Python Check (cho design database)
-  → python3 --version || python --version
-  → FAIL: Cảnh báo (không block) — AI dùng built-in knowledge
+Step 0.2: Stitch MCP Health Check (BẮT BUỘC)
+  → Gọi list_projects()
+  → SUCCESS: ✅ Proposal C (Stitch AI) available
+  → FAIL: ⛔ DỪNG WORKFLOW — Stitch MCP bắt buộc cho 4-Proposal system
+    → Kiểm tra Stitch MCP config và server status
+    → Sau khi sửa xong, chạy lại /design
 
-Step 0.3: Hiện Design Engine Status
-  ┌─────────────────────────────────────┐
-  │ 🎨 DESIGN ENGINE STATUS             │
-  │                                     │
-  │ Taste-Skill  ✅ Core (luôn active)  │
-  │ Pencil MCP   ✅ Active (bắt buộc)  │
-  │ Design DB    ✅/⚠️ [python status]  │
-  │                                     │
-  │ ▶ Sẵn sàng thiết kế                 │
-  └─────────────────────────────────────┘
+Step 0.3: Python Check (cho design database)
+  → python3 --version || python --version
+  → SUCCESS: ✅ Proposal B dùng CSV database
+  → FAIL: ⚠️ Proposal B dùng AI built-in knowledge thay thế
+
+Step 0.4: Hiện Design Engine Status
+  ┌──────────────────────────────────────────────┐
+  │ 🎨 4-ENGINE STATUS                           │
+  │                                              │
+  │ A. Pencil Style Guide   ✅ Active (bắt buộc) │
+  │ B. UI-UX-Pro-Max DB     ✅/⚠️ [python]       │
+  │ C. Stitch AI            ✅ Active (bắt buộc) │
+  │ D. Taste-Skill Arsenal  ✅ Core (luôn active) │
+  │                                              │
+  │ 📌 Path: normalize \ → / trước embed (Win)   │
+  │ ▶ Sẵn sàng — 4 proposals sẽ được tạo           │
+  └──────────────────────────────────────────────┘
 ```
 
 ### Step 1: Determine Scope
@@ -177,7 +194,7 @@ SKILL_OVERLAY: [design-minimalist | none]
 
 **Initialize tracking:**
 ```
-TRACKING: Agents: [designer] | Skills: [design-taste] | MCP Tools: [pencil] | Sự cố: []
+TRACKING: Agents: [designer] | Skills: [design-taste] | MCP Tools: [pencil, stitch] | Sự cố: []
 ```
 
 ---
@@ -206,36 +223,112 @@ Outputs:
   - Active Taste Profile
 ```
 
-### 1.2 Design Direction Proposals (BẮT BUỘC — KHÔNG hardcode)
+### 1.2 Design Direction Proposals — 4-Proposal Multi-Engine (BẮT BUỘC)
+
+> Mỗi engine tạo **1 proposal riêng biệt** — KHÔNG trộn lẫn. User so sánh rồi chọn hoặc mix.
 
 ```
-Bước 1 — Data lookup (design database — bổ trợ):
-  IF PYTHON_AVAILABLE:
-    → python3 .agent/skills/frontend/design-taste/scripts/search.py "{keywords}" --design-system -p "{project_name}" -f markdown
-    → Lấy palette, font, style recommendations
-  ELSE:
-    → AI dùng built-in design-taste knowledge
+Bước 0 — User Input Collection (BẮT BUỘC):
+  → Thu thập Taste Profile (3 dials + archetype) từ Step 3
+  → Thu thập domain keywords, audience, mood từ 1.1
+  → Tổng hợp thành Design Brief tóm tắt (shared cho tất cả engines)
 
-Bước 2 — Creative filtering (design-taste — chủ đạo):
-  → Apply AI Tells filter: loại bỏ kết quả generic
-  → Apply Bias Correction: đảm bảo không trùng AI clichés
-  → Apply Dials: filter theo DESIGN_VARIANCE/MOTION/DENSITY
-  → Tạo 3 Direction Proposals qua lăng kính taste-skill
+─────────────────────────────────────────────────────────────────
+Bước 1 — Proposal A: PENCIL STYLE GUIDE (Visual-driven)
+─────────────────────────────────────────────────────────────────
+  Source: Pencil MCP style guides + layout guidelines
+  Steps:
+    → get_style_guide_tags() → chọn 5-10 tags phù hợp domain/audience
+    → get_style_guide(tags) → nhận visual direction từ Pencil
+    → get_guidelines("web-app"/"mobile-app"/"landing-page") → layout best practices
+    → Tổng hợp Direction A:
+      • Palette (từ style guide colors)
+      • Typography (từ style guide fonts)
+      • Layout concept (từ guidelines)
+      • Mood/vibe keywords
+    → Pencil batch_design() → visual preview card cho Direction A
+    → Pencil get_screenshot() → render preview (normalize path!)
 
-Bước 3 — Design inspiration (Pencil — gợi ý):
-  → Pencil get_style_guide(tags) → visual inspiration
-  → Pencil get_guidelines("web-app"/"mobile-app"/"landing-page") → layout best practices
-  → Kết hợp Pencil inspiration + taste-skill filtering → refine 3 directions
+─────────────────────────────────────────────────────────────────
+Bước 2 — Proposal B: UI-UX-PRO-MAX DB (Data-driven)
+─────────────────────────────────────────────────────────────────
+  Source: 23 CSV databases + search.py script
+  Steps:
+    IF PYTHON_AVAILABLE:
+      → python3 .agent/skills/frontend/design-taste/scripts/search.py \
+          "{keywords}" --design-system -p "{project_name}" -f markdown
+      → Cross-reference domain với products.csv, styles.csv, typography.csv, colors.csv
+      → Lấy data-driven palette, font pairings, style recommendations
+    ELSE:
+      → AI dùng built-in knowledge từ design-taste SKILL.md
+    → Tổng hợp Direction B:
+      • Palette (từ colors.csv best practices)
+      • Typography (từ typography.csv domain match)
+      • Layout concept (từ products.csv + ux-guidelines.csv)
+      • Industry benchmarks
+    → Pencil batch_design() → visual preview card cho Direction B
+    → Pencil get_screenshot() → render preview (normalize path!)
 
-Bước 4 — Visual preview (Pencil — mockup):
-  → Tạo file foundation.pen
-  → Pencil batch_design() → 3 visual direction mockups
-  → Pencil get_screenshot() → render preview images
+─────────────────────────────────────────────────────────────────
+Bước 3 — Proposal C: STITCH AI (AI-generative)
+─────────────────────────────────────────────────────────────────
+  Source: Stitch MCP — AI screen generation (BẮT BUỘC)
+  Steps:
+    → create_project(title: "{project_name} — Design Direction")
+    → generate_screen_from_text(
+        prompt: tóm tắt Design Brief + device type + key features,
+        deviceType: DESKTOP/MOBILE theo project
+      )
+    → get_screen() → lấy kết quả Stitch generated
+    → Phân tích Stitch output → extract:
+      • Palette (từ generated screen colors)
+      • Typography (từ generated screen fonts)
+      • Layout concept (từ Stitch AI's interpretation)
+      • AI-generated visual direction
+    → Pencil batch_design() → visual preview card cho Direction C
+      (hoặc dùng Stitch preview trực tiếp nếu chất lượng đủ)
+    → Pencil get_screenshot() → render preview (normalize path!)
 
-Bước 5 — User review:
-  → Hiện 3 directions kèm hình preview từ Pencil
-  → AI khuyến nghị Direction [X] vì [lý do]
-  → User chọn → Lock direction
+─────────────────────────────────────────────────────────────────
+Bước 4 — Proposal D: TASTE-SKILL ARSENAL (Philosophy-driven)
+─────────────────────────────────────────────────────────────────
+  Source: design-taste SKILL.md — creative arsenal + anti-slop rules
+  Steps:
+    → Load Creative Arsenal Reference (Section 6) → chọn concepts phù hợp
+    → Apply 3 Dials (VARIANCE, MOTION, DENSITY) → xác định style envelope
+    → Apply Bias Correction (Section 3) → đảm bảo không trùng AI clichés
+    → Apply AI Tells filter (Section 7) → loại bỏ forbidden patterns
+    → Tổng hợp Direction D:
+      • Palette (anti-slop: không purple-blue, không oversaturated)
+      • Typography (anti-slop: không Inter/Roboto/Arial)
+      • Layout concept (creative arsenal: asymmetric/bento/split-screen)
+      • Premium uniqueness principles
+    → Pencil batch_design() → visual preview card cho Direction D
+    → Pencil get_screenshot() → render preview (normalize path!)
+
+─────────────────────────────────────────────────────────────────
+Bước 5 — Comparison Panel + User Choice
+─────────────────────────────────────────────────────────────────
+  → Tạo bảng so sánh 4 proposals:
+    ┌─────────────────────────────────────────────────────────────┐
+    │ PROPOSAL COMPARISON                                        │
+    ├─────────┬──────────┬──────────┬──────────┬────────────────┤
+    │         │ A.Pencil │ B.DB     │ C.Stitch │ D.Taste-Skill  │
+    ├─────────┼──────────┼──────────┼──────────┼────────────────┤
+    │ Palette │ [colors] │ [colors] │ [colors] │ [colors]       │
+    │ Font    │ [fonts]  │ [fonts]  │ [fonts]  │ [fonts]        │
+    │ Layout  │ [desc]   │ [desc]   │ [desc]   │ [desc]         │
+    │ Mood    │ [mood]   │ [mood]   │ [mood]   │ [mood]         │
+    │ Preview │ [image]  │ [image]  │ [image]  │ [image]        │
+    └─────────┴──────────┴──────────┴──────────┴────────────────┘
+  → AI đánh giá ưu/nhược từng proposal
+  → AI khuyến nghị Direction [X] vì [lý do cụ thể]
+  → User lựa chọn:
+    • Chọn nguyên 1 proposal
+    • Hoặc MIX: "Palette từ A + Layout từ C + Font từ D"
+  → Lock direction → proceed to 1.3
+
+  ⚠️ PATH: Tất cả preview images PHẢI normalize \ → / trước khi embed!
 
 ⛔ CẤM dùng giá trị mặc định cố định (như #2563EB, Inter)
    → Palette và font PHẢI được chọn dựa trên domain analysis
@@ -270,6 +363,9 @@ Present Foundation to user:
 - Pencil screenshots: palette swatches, font pairing, component style preview
 - Spacing scale
 - Active Taste Profile values
+- Nguồn gốc direction: từ engine nào (hoặc mix từ engines nào)
+
+> ⚠️ **PATH**: Normalize tất cả screenshot paths `\` → `/` trước khi embed vào artifact!
 
 Ask: "Bạn duyệt Foundation Design này không?"
 Loop until approved → **Foundation locked** ✅
@@ -453,8 +549,10 @@ Loop until approved per group.
 
 ```
 → Pencil get_screenshot() → preview per screen
+  ⚠️ PATH: normalize \ → / trước khi embed vào artifact/walkthrough!
 → User review → iteration loop until approved
 → Pencil export_nodes(format="png") → design handoff images
+  ⚠️ PATH: normalize \ → / cho tất cả exported file paths!
 → Save to .nexus/phases/phase-{N}/design/mockups/
 ```
 

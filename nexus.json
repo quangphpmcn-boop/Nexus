@@ -1,6 +1,6 @@
 {
   "name": "nexus",
-  "version": "3.3.0",
+  "version": "3.5.0",
   "description": "Unified Agentic Development Framework for Antigravity IDE",
   "project": {
     "language": "vi"
@@ -83,7 +83,13 @@
     "confidence_decay_days": 30,
     "min_cluster_size": 2,
     "min_cluster_confidence": 0.7,
-    "auto_prune_threshold": 0.2
+    "auto_prune_threshold": 0.2,
+    "sync_to_source": {
+      "enabled": true,
+      "auto_sync_on_end": true,
+      "sync_reasoning_bank": true,
+      "sync_skill_amendments": true
+    }
   },
   "health_checks": {
     "check_config_integrity": true,

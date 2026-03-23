@@ -44,6 +44,8 @@ Dự án này sử dụng **Nexus Framework** — framework phát triển agenti
 9. **Claim Audit before done (v2.1)** — Evidence table (CONFIRMED/UNCONFIRMED/CONTRADICTED)
 10. **Scope Guard (v2.1)** — git diff vs plan sau mỗi wave
 11. **Critical functions (v2.1)** — Nếu `.nexus/critical-functions.md` tồn tại → đọc trước khi edit
+12. **Context7 Enforcement (v3.3)** — Dùng thư viện ngoài PHẢI tra Context7 trước khi code
+13. **4-Proposal Multi-Engine (v3.4)** — `/design` tạo 4 proposals tách biệt (Pencil + UI-UX-Pro-Max + Stitch + Taste-Skill). Stitch MCP bắt buộc.
 
 ## Trạng thái Dự án
 - `.nexus/state.md` — ĐỌC ĐẦU TIÊN mỗi phiên
@@ -51,7 +53,7 @@ Dự án này sử dụng **Nexus Framework** — framework phát triển agenti
 - `.nexus/project.md` — tầm nhìn, tech stack
 
 ## Framework Location
-- `.agent/workflows/` — 14 workflows
+- `.agent/workflows/` — 15 workflows
 - `.agent/skills/` — 119 skills (auto-discover)
 - `.agent/agents/` — 6 agents + 14 protocols
 - `.agent/orchestration/` — Orchestrator

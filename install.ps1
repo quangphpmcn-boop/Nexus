@@ -11,7 +11,7 @@ param(
 
 # --- Auto-detect Nexus source from script location (Fix #1) ---
 $NexusRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$NexusVersion = "3.3"
+$NexusVersion = "3.5"
 
 
 # --- Helpers ---
@@ -128,10 +128,10 @@ else {
         }
     }
 
-    Write-Host "    • workflows/ (15) • skills/ (119)" -ForegroundColor DarkGray
+    Write-Host "    • workflows/ (16) • skills/ (119)" -ForegroundColor DarkGray
     Write-Host "    • agents/ (6+13)  • orchestration/" -ForegroundColor DarkGray
     Write-Host "    • maintenance/    • templates/ (10)" -ForegroundColor DarkGray
-    Write-Host "    • rules/" -ForegroundColor DarkGray
+    Write-Host "    • knowledge/      • rules/" -ForegroundColor DarkGray
 }
 
 # --- GEMINI.md ---
@@ -158,6 +158,17 @@ else {
 $versionFile = Join-Path $ProjectPath ".agent\.nexus-version"
 Set-Content -Path $versionFile -Value $NexusVersion -Encoding UTF8 -Force
 Write-OK "Version: $NexusVersion"
+
+# Knowledge Sync: Write source path for backflow (only if .agent/ was installed)
+if ($agentInstalled -and -not $Dev) {
+    $sourcePath = $NexusRoot -replace '\\', '/'
+    $sourceFile = Join-Path $ProjectPath ".agent\.nexus-source"
+    Set-Content -Path $sourceFile -Value $sourcePath -Encoding UTF8 -Force
+    Write-OK "Source path: $sourcePath (knowledge sync enabled)"
+}
+elseif ($Dev) {
+    Write-Skip "Source path: không cần (dev mode — symlink auto-sync)"
+}
 
 # Fix #3: Add .gitignore entries
 $gitignore = Join-Path $ProjectPath ".gitignore"
@@ -240,7 +251,7 @@ Write-Host "━━━ Bước 3/3: Tóm tắt & Hướng dẫn ━━━" -Foreg
 Write-Host ""
 
 $installed = @()
-if (Test-Path (Join-Path $ProjectPath ".agent\workflows")) { $installed += "Workflows (15)" }
+if (Test-Path (Join-Path $ProjectPath ".agent\workflows")) { $installed += "Workflows (16)" }
 if (Test-Path (Join-Path $ProjectPath ".agent\skills\nexus")) { $installed += "Skills (119)" }
 if (Test-Path (Join-Path $ProjectPath ".agent\agents")) { $installed += "Agents (6+13)" }
 if (Test-Path (Join-Path $ProjectPath ".agent\rules")) { $installed += "Rules" }

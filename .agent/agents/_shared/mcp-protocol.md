@@ -2,13 +2,14 @@
 
 ## Overview
 
-Nexus uses 3 MCP servers throughout the project lifecycle:
+Nexus uses 4 MCP servers throughout the project lifecycle:
 
 | MCP Server | Purpose | When Used |
 |-----------|---------|-----------|
 | **Serena** | Memory, symbolic code analysis, thinking tools, mode switching | Every workflow |
 | **Context7** | Library docs lookup, version-specific API reference | Plan, Execute, Debug |
 | **Pencil** | Design inspiration + visual mockup, design↔code sync, .pen files | Design phase (BẮT BUỘC) |
+| **Stitch** | AI screen generation, rapid visual prototyping | Design phase (BẮT BUỘC) |
 
 ---
 
@@ -170,9 +171,54 @@ Quy trình: `batch_get()` → `resolve-library-id()` → `query-docs()` → veri
 >
 > **Các workflow khác** (execute, review): Fall back to text-based analysis nếu cần.
 
+### Path Normalization (Windows — BẮT BUỘC)
+
+Tất cả paths từ Pencil tools (`export_nodes`, `get_screenshot`) PHẢI normalize `\` → `/` trước khi embed vào markdown.
+
+```
+❌ ![mockup](C:\Users\Dzymo\.nexus\design\screen.png)
+✅ ![mockup](C:/Users/Dzymo/.nexus/design/screen.png)
+```
+
 ---
 
-## 4. Serena Symbolic Tools — Code Analysis & Editing
+## 4. Stitch MCP — AI Screen Generation
+
+### Overview
+
+Stitch MCP generates UI screens directly from text prompts using AI. It acts as one of the 4 design proposal engines in the `/design` workflow.
+
+### Tools
+
+| Tool | Usage |
+|------|-------|
+| `create_project(title)` | Tạo project mới cho design exploration |
+| `generate_screen_from_text(projectId, prompt)` | AI-generate screen từ text prompt |
+| `get_screen(projectId, screenId)` | Lấy chi tiết screen đã generate |
+| `list_screens(projectId)` | Liệt kê screens trong project |
+| `edit_screens(projectId, screenIds, prompt)` | Chỉnh sửa screens đã generate |
+| `generate_variants(projectId, screenIds, prompt)` | Tạo biến thể của screen |
+| `list_projects()` | Liệt kê tất cả projects |
+| `get_project(name)` | Lấy chi tiết project |
+
+### Usage in Design Workflow
+
+| Step | Stitch Tool | Purpose |
+|------|-------------|--------|
+| MCP Readiness (Step 0.2) | `list_projects()` | Kiểm tra Stitch availability |
+| Proposal C (Stage 1.2) | `create_project()` | Tạo project cho design direction |
+| Proposal C (Stage 1.2) | `generate_screen_from_text()` | AI-generate screen prototype |
+| Proposal C (Stage 1.2) | `get_screen()` | Lấy kết quả để phân tích |
+
+### Availability
+
+- Stitch là **BẮT BUỘC** trong design workflow — cần cho Proposal C
+- Nếu Stitch không khả dụng → **DỪNG workflow**, yêu cầu sửa Stitch MCP
+- Stitch output được chuyển thành Pencil visual preview card để so sánh đồng nhất
+
+---
+
+## 5. Serena Symbolic Tools — Code Analysis & Editing
 
 ### Overview
 
@@ -224,7 +270,7 @@ Symbolic tools reduce context usage by **3-5x**:
 
 ---
 
-## 6. Serena Mode Switching — Workflow Optimization
+## 7. Serena Mode Switching — Workflow Optimization
 
 ### Overview
 
@@ -324,6 +370,7 @@ All subsequent chat sessions will reuse the same Serena session.
 | Serena | Modes | `switch_modes` |
 | Context7 | Docs | `resolve-library-id`, `query-docs` |
 | Pencil | Design | `batch_design`, `batch_get`, `get_screenshot`, `snapshot_layout`, `get_variables`, `set_variables`, `get_editor_state`, `get_guidelines`, `get_style_guide`, `export_nodes` |
+| Stitch | Design | `create_project`, `generate_screen_from_text`, `get_screen`, `list_screens`, `edit_screens`, `generate_variants`, `list_projects`, `get_project` |
 
 ---
 
@@ -336,7 +383,8 @@ flowchart LR
     end
 
     subgraph Design
-        D1["Designer"] -->|design in .pen| PEN["Pencil"]
+        D1["Designer"] -->|"design in .pen"| PEN["Pencil"]
+        D1 -->|"generate screen"| STI["Stitch"]
         D1 -->|write design-brief| SM2["Serena"]
     end
 
