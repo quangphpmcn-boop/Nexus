@@ -2,7 +2,7 @@
 
 > File này được Antigravity tự động đọc mỗi phiên làm việc.
 
-Dự án này sử dụng **Nexus Framework v3.6** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
+Dự án này sử dụng **Nexus Framework v3.6.1** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
 
 ## Chế độ Song ngữ
 - Giao tiếp với tôi bằng **tiếng Việt**

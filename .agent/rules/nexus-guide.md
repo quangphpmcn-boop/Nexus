@@ -52,6 +52,7 @@ Dự án này sử dụng **Nexus Framework** — framework phát triển agenti
 14. **Knowledge Sync (v3.5)** — `/end` tự động sync reasoning-bank về source framework
 15. **Clarify before plan (v3.6)** — Khuyến nghị `/clarify` trước `/plan` để giảm rework
 16. **Phantom detection (v3.6)** — `/verify` tự động phát hiện tasks đánh dấu done nhưng không có implementation
+17. **ck Semantic Search (v3.6.1)** — Nếu ck MCP khả dụng, dùng `semantic_search` tìm code theo ý nghĩa (optional)
 
 ## Trạng thái Dự án
 - `.nexus/state.md` — ĐỌC ĐẦU TIÊN mỗi phiên
