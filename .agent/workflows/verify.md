@@ -30,7 +30,21 @@ For each requirement in this phase:
 TRACKING: Agents: [reviewer] | Skills: [] ⛔ KHÔNG "nexus" | MCP Tools: [] | Sự cố: []
 ```
 
-### Step 1.5: Auto-Detect Test Commands (Pre-Verify Hook)
+### Step 1.5: Phase Velocity Warning (v3.7)
+
+> Auto-check tốc độ hoàn thành phases — phát hiện batch processing thiếu kiểm soát.
+
+1. **Đọc `roadmap.md`** → liệt kê phases có `✅ Done` và ngày completed
+2. **Count phases completed today** (hoặc cùng ngày với phase đang verify)
+3. **Verdict**:
+   - 1-2 phases/ngày → ✅ Bình thường
+   - 3-4 phases/ngày → `⚠️ High velocity: {N} phases completed today. Consider deeper functional verification in Step 2.5.`
+   - 5+ phases/ngày → `🔴 Extreme velocity: {N} phases in one day. STRONGLY recommend thorough functional testing before accepting.`
+4. **Advisory** — không block, nhưng hiển thị cho user
+
+> Phases phức tạp (>3 plans, >10 files) completed cùng ngày → escalate severity thêm 1 bậc.
+
+### Step 1.7: Auto-Detect Test Commands (Pre-Verify Hook)
 
 Tự động phát hiện cách chạy test/build/lint từ project config:
 
@@ -57,6 +71,74 @@ Run verification steps from each plan's `<verification>` section:
 
 > ⛔ "Should pass" = KHÔNG CHẤP NHẬN. Phải có output.
 
+### Step 2.5: Functional Verification (BẮT BUỘC — v3.7)
+
+> ⛔ **IRON RULE**: Build pass ≠ Feature complete. Agent PHẢI demo từng requirement.
+
+Step 2 chỉ chứng minh "code compiles". Step này chứng minh "features work as specified".
+
+1. **Load requirements**: đọc `requirements.md` → lọc REQ-xxx thuộc phase đang verify
+2. **For each REQ**:
+   a. **Extract expected behaviors** từ requirement description + spec.md
+   b. **Verify implementation exists**:
+      - Code path cho feature tồn tại? (search for handler, component, route)
+      - UI component render đúng? (inspect JSX/template)
+      - Backend endpoint xử lý đúng? (inspect handler logic)
+   c. **Run functional check** (chọn phương pháp phù hợp):
+      - **App-level**: run app → navigate → exercise feature → capture result
+      - **Code-level**: trace code path từ route → handler → DB → response
+      - **Browser-level**: nếu web app → open browser → interact → verify
+   d. **Record verdict**: PASS / PARTIAL / FAIL + evidence
+3. **Tạo Functional Verification Table**:
+
+```
+### Functional Verification — Phase {N}
+| REQ | Expected Behavior | Verification Method | Evidence | Verdict |
+|-----|-------------------|--------------------|-----------|---------|
+| REQ-001 | CRUD đơn vị đa cấp | Code trace + DB check | Handler exists, 3-level tree works | ✅ PASS |
+| REQ-002 | 53 fields CBCS | UI field count vs spec | Form has 15/53 fields | 🔴 FAIL |
+```
+
+4. **Verdict**:
+   - ALL PASS → proceed to Step 2.7
+   - ANY PARTIAL → `⚠️ Partial implementation: [REQ list]. Document gaps.`
+   - ANY FAIL → `🔴 BLOCKING: [REQ list] not implemented. Cannot proceed. Create follow-up plan.`
+
+> **FAIL = BLOCKING** — phase KHÔNG được đánh dấu complete khi có REQ FAIL.
+> **PARTIAL = WARNING** — phase có thể proceed nếu user explicitly accepts gaps.
+
+### Step 2.7: Completeness Audit (BẮT BUỘC — v3.7)
+
+> Kiểm tra structural completeness — field coverage giữa DB schema, UI forms, và requirements.
+
+1. **Scan DB schema** → đếm fields per entity (migration files hoặc DB inspect)
+2. **Scan UI forms** → đếm form fields per entity (JSX/template files)
+3. **Scan requirements** → đếm expected fields per entity (từ requirements.md hoặc spec.md)
+4. **Compare** và tạo Completeness Table:
+
+```
+### Completeness Audit — Phase {N}
+| Entity | DB Fields | UI Fields | REQ Fields | Coverage | Status |
+|--------|-----------|-----------|------------|----------|--------|
+| Personnel (CBCS) | 53 | 15 | 53 | 28% | 🔴 FAIL |
+| Personnel (LĐHĐ) | 29 | 12 | 29 | 41% | 🔴 FAIL |
+| Units | 7 | 7 | 7 | 100% | ✅ PASS |
+```
+
+5. **Detect code stubs**:
+   - Search for: `# placeholder`, `# TODO`, `# FIXME`, `// TODO`, `// FIXME`
+   - Search for: stub functions (empty body, `pass`, `return null`, `throw new Error('not implemented')`)
+   - Se có → liệt kê trong report
+
+6. **Verdict**:
+   - ALL entities coverage ≥ 80% + 0 stubs → ✅ PASS
+   - ANY entity coverage 50-79% → `⚠️ WARNING: [entity] at {X}% coverage`
+   - ANY entity coverage < 50% → `🔴 FAIL: [entity] at {X}% coverage — incomplete implementation`
+   - Stubs found → `⚠️ {N} placeholder/TODO found — must resolve before completion`
+
+> **FAIL = BLOCKING** — entity dưới 50% coverage = chưa implement đủ.
+> Skip audit nếu phase không có data entities (VD: config-only, documentation phases).
+
 > **ON VERIFY FAIL** → Thêm vào tracking "Sự cố" trước khi tiến hành fix.
 
 ### Step 3: Cross-Plan Integration Check
@@ -65,7 +147,7 @@ Verify plans work together:
 - API contracts match between consumer and provider
 - No broken imports or references
 - If design exists: UI matches wireframes, design tokens, responsive breakpoints
-- **ck integration scan (v3.6.1)**: nếu ck khả dụng → `semantic_search("breaks interface contract")` tìm breaking changes ngoài scope grep
+- **ck integration scan (v3.7)**: nếu ck khả dụng → `semantic_search("breaks interface contract")` tìm breaking changes ngoài scope grep
 
 **Context7 API Verification** (BẮT BUỘC nếu code dùng thư viện ngoài):
 - Với thư viện chính trong phase → gọi `resolve-library-id` + `query-docs`
@@ -181,7 +263,40 @@ If user accepts:
 - Update `state.md` → next phase
 - Update progress bar
 - Clear resolved blockers
-- **Memory cleanup**: xóa memory files cũ của phase đã xong (`progress-*.md`, `results-*.md`, `task-board.md`) — theo rule "Clean up" trong memory-protocol
+
+**Requirements Status Update (BẮT BUỘC — v3.7)**:
+- Đọc `requirements.md` → tìm REQ-xxx có Phase = phase vừa complete
+- Với mỗi REQ:
+  - Functional Verification (Step 2.5) = PASS → cập nhật status `⬚` → `✅`
+  - Functional Verification = PARTIAL → cập nhật status `⬚` → `⚠️` + ghi note gap
+  - Functional Verification = FAIL → GIỮ NGUYÊN `⬚` (phase không nên được accept nếu có FAIL)
+- Verify: sau khi update → đọc lại `requirements.md` → confirm status đã đổi
+
+**Phase Archive (v3.7)** — thay thế memory cleanup:
+- **Archive** (KHÔNG XÓA): move các file sau vào `.nexus/archive/phase-{N}/`:
+  - Plan XML files (`phase-{N}-*-PLAN.md`)
+  - Summary files (`phase-{N}-*-SUMMARY.md`)
+  - `wave-structure.md`
+  - `task-board.md` (snapshot cuối)
+  - `results-{phase}-*.md`
+  - `verification-report.md` (copy)
+  - `spec.md`, `research.md`, `clarifications.md` (nếu tồn tại)
+- **Xóa** (volatile only): `progress-*.md` — file tạm theo dõi tiến độ realtime
+- Cấu trúc archive:
+  ```
+  .nexus/archive/
+  └── phase-{N}/
+      ├── phase-{N}-1-PLAN.md
+      ├── phase-{N}-1-SUMMARY.md
+      ├── wave-structure.md
+      ├── task-board.md
+      ├── results-{N}-1.md
+      ├── verification-report.md
+      ├── spec.md
+      └── research.md
+  ```
+
+> **Lý do**: Plan và evidence cần giữ lại cho audit trail. Phantom Detection (Step 5.3) phụ thuộc plan XML và task-board để hoạt động. Xóa chúng = vô hiệu hóa quality gates cho phases cũ.
 
 ### Step 7.5: Finalize Usage Log (BẮT BUỘC)
 

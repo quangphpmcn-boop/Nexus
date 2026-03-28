@@ -14,7 +14,7 @@ Shared memory allows agents to communicate across sessions and execution boundar
 ## Read/Write Rules
 1. **Read before write**: always read existing content before overwriting
 2. **Append, don't replace**: for logs and progress, append new entries
-3. **Clean up**: delete temporary memory files after they're consumed
+3. **Archive, don't delete (v3.7)**: move phase artifacts (plans, summaries, task-board, results, verification-report) to `.nexus/archive/phase-{N}/` after phase completion. Only delete truly volatile files (`progress-*.md`). Giữ lại plans + evidence cho audit trail và Phantom Detection.
 4. **Timestamp**: include ISO timestamp in every memory write
 5. **Attribution**: include agent name in every memory write
 

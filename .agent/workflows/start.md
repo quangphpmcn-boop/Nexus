@@ -155,6 +155,30 @@ Hiện báo cáo phục hồi:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+### Step 4.5: Usage Log Continuity Check (v3.7)
+
+> Phát hiện phases hoàn thành nhưng không có usage log — dấu hiệu workflow bị bypass.
+
+1. **Đọc `roadmap.md`** → liệt kê phases có `✅ Done` + ngày completed
+2. **Đọc `usage-log.md`** → liệt kê phases có log entry (parse headers `## [date] Phase N`)
+3. **Compare** → tìm phases Done nhưng thiếu log:
+
+```
+### Usage Log Continuity — Check
+| Phase | Roadmap Status | Usage Log Entry | Status |
+|-------|---------------|-----------------|--------|
+| Phase 1 | ✅ Done (2026-03-22) | ❌ Missing | ⚠️ GAP |
+| Phase 2 | ✅ Done (2026-03-22) | ✅ Found | ✅ OK |
+```
+
+4. **Verdict**:
+   - 0 gaps → skip silently
+   - 1-2 gaps → `⚠️ Missing usage log for phases: [list]. Consider documenting retroactively.`
+   - 3+ gaps → `🔴 Significant log gaps: {N} phases without usage log. Workflow compliance may be compromised.`
+
+> Advisory — không block `/start`. Nhưng hiển thị cho user awareness.
+> Giúp phát hiện tình trạng agent chạy nhiều phases trong 1 session mà không log đầy đủ.
+
 ### Step 5: Guide → Next Steps
 
 Invoke `guide.md` → hiện bước tiếp theo dựa trên state.

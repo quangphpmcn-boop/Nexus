@@ -123,13 +123,17 @@ Trong `wave-structure.md`, ghi rõ dependency:
 
 > **Backward-compatible:** Nếu `depends_on` không ghi → mặc định sequential ordering (wave 1 → 2 → 3).
 
-### Step 4: Plan Check (if `workflow.plan_check` is true)
+### Step 4: Plan Check (BẮT BUỘC — v3.7)
+
+> ⛔ Plan Check luôn chạy. Config `workflow.plan_check` chỉ toggle Enhanced Validation (over-engineering, tech audit, principles) ở phần dưới.
+
 Invoke Reviewer agent to verify:
 - [ ] Every requirement has at least one plan covering it
 - [ ] No plan is too large (> 5 tasks = split it)
 - [ ] No circular dependencies between plans
 - [ ] Verification steps defined for each plan
 - [ ] Reasoning-bank patterns considered
+- [ ] **Field coverage estimate (v3.7)**: nếu REQ khai báo N fields → plan phải liệt kê đủ N fields trong tasks. Thiếu fields = plan chưa hoàn chỉnh.
 
 **Enhanced Validation (v3.6)** — 3 kiểm tra bổ sung:
 

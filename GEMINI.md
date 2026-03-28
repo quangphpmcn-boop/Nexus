@@ -2,7 +2,7 @@
 
 > File này được Antigravity tự động đọc mỗi phiên làm việc.
 
-Dự án này sử dụng **Nexus Framework v3.6.1** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
+Dự án này sử dụng **Nexus Framework v3.7.0** — framework phát triển agentic có cấu trúc cho Antigravity IDE.
 
 ## Chế độ Song ngữ
 - Giao tiếp với tôi bằng **tiếng Việt**
@@ -45,6 +45,9 @@ Luôn tuân theo chu trình Nexus:
 14. **Knowledge Sync (v3.5)** — `/end` tự động sync reasoning-bank về source framework. `/sync-knowledge` để sync thủ công.
 15. **Clarify before plan (v3.6)** — Khuyến nghị `/clarify` trước `/plan` để giảm rework. Generates `clarifications.md` per-phase.
 16. **Phantom detection (v3.6)** — `/verify` tự động phát hiện tasks đánh dấu done nhưng không có implementation thực sự.
+17. **Functional Verification (v3.7)** — `/verify` PHẢI demo từng REQ (build pass ≠ feature complete). BLOCKING nếu REQ FAIL.
+18. **Completeness Audit (v3.7)** — `/verify` kiểm tra DB fields vs UI fields vs spec fields. Coverage < 50% = FAIL.
+19. **Phase Archive (v3.7)** — Phase transition archive plans + evidence vào `.nexus/archive/`. KHÔNG xóa.
 
 ## Trạng thái Dự án
 - `.nexus/state.md` — ĐỌC ĐẦU TIÊN mỗi phiên làm việc
@@ -68,4 +71,4 @@ Luôn tuân theo chu trình Nexus:
 | **Context7** | Tra cứu docs thư viện, API reference mới nhất. **Bắt buộc** khi dùng thư viện ngoài (v3.3) |
 | **Pencil** | Vector design trong IDE, design↔code sync, .pen files |
 | **Stitch** | AI screen generation, rapid visual prototyping. **Bắt buộc** trong /design (v3.4) |
-| **ck** | Semantic code search — tìm code theo ý nghĩa, không chỉ keyword. Optional (v3.6.1) |
+| **ck** | Semantic code search — tìm code theo ý nghĩa, không chỉ keyword. Optional (v3.7) |
