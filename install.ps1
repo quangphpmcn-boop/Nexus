@@ -11,7 +11,7 @@ param(
 
 # --- Auto-detect Nexus source from script location (Fix #1) ---
 $NexusRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$NexusVersion = "3.5"
+$NexusVersion = "3.7.0"
 
 
 # --- Helpers ---

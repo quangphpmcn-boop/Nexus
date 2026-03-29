@@ -14,7 +14,7 @@ Nexus là framework phát triển phần mềm agentic có cấu trúc, thiết 
 - [Workflow Engine](#-workflow-engine)
 - [6 Agents chuyên biệt](#-6-agents-chuyên-biệt)
 - [119 Skills](#-119-skills)
-- [3 MCP tích hợp](#-3-mcp-tích-hợp)
+- [5 MCP tích hợp](#-5-mcp-tích-hợp)
 - [Shared Protocols](#-shared-protocols)
 - [Self-Learning (Reasoning Bank)](#-self-learning-reasoning-bank)
 - [Cấu hình](#%EF%B8%8F-cấu-hình)
@@ -82,7 +82,7 @@ Hệ thống hỏi đáp thông minh với 3 mức độ (thorough/balanced/quic
 
 ### 7. Design-First Approach
 
-Phase nào có UI đều phải qua `/design` trước khi `/plan`. Quy trình 5 stages: MCP Check → Foundation Design → Screen Design → Component Design → Visual Mockup. Tất cả được thực hiện trong Pencil MCP với triết lý anti-slop từ Taste-Skill.
+Phase nào có UI đều phải qua `/design` trước khi `/plan`. 4-Proposal Multi-Engine (v3.4): tạo 4 proposals tách biệt (Pencil + UI-UX-Pro-Max + Stitch + Taste-Skill). Quy trình 4 stages trong Pencil MCP với Stitch AI prototyping.
 
 ---
 
@@ -95,7 +95,7 @@ project/
 ├── .agent/                          # ← Framework (Antigravity native format)
 │   ├── rules/
 │   │   └── nexus-guide.md           # Auto-loaded rules
-│   ├── workflows/                   # 14 workflow definitions
+│   ├── workflows/                   # 17 workflow definitions
 │   │   ├── init.md                  # Khởi tạo dự án
 │   │   ├── design.md                # Thiết kế UI/UX
 │   │   ├── plan.md                  # Lập kế hoạch phase
@@ -109,19 +109,22 @@ project/
 │   │   ├── start.md                 # Khởi đầu phiên làm việc
 │   │   ├── end.md                   # Kết thúc phiên làm việc
 │   │   ├── learn.md                 # Extract patterns → reasoning-bank
-│   │   └── evolve.md                # Cluster patterns → skill amendments
+│   │   ├── evolve.md                # Cluster patterns → skill amendments
+│   │   ├── clarify.md               # Làm rõ yêu cầu trước planning
+│   │   ├── audit.md                 # Kiểm tra toàn diện
+│   │   └── sync-knowledge.md        # Sync kiến thức về source framework
 │   ├── skills/                      # 119 skills — Antigravity auto-discover
 │   │   ├── nexus/SKILL.md           # Framework entry point
 │   │   ├── SKILL-INDEX.md           # Bảng tra cứu keyword
 │   │   └── {14 categories}/         # Xem chi tiết bên dưới
-│   ├── agents/                      # 6 agents + 14 shared protocols
+│   ├── agents/                      # 6 agents + 13 shared protocols
 │   │   ├── architect/SKILL.md       # Phân tích yêu cầu, kiến trúc
 │   │   ├── designer/SKILL.md        # Wireframes, design system
 │   │   ├── planner/SKILL.md         # Tạo plan XML atomic
 │   │   ├── executor/SKILL.md        # Code theo plan
 │   │   ├── reviewer/SKILL.md        # Verify, security audit
 │   │   ├── debugger/SKILL.md        # Root cause analysis
-│   │   └── _shared/                 # 14 protocols dùng chung
+│   │   └── _shared/                 # 13 protocols dùng chung
 │   ├── orchestration/               # Điều phối đa agent
 │   │   ├── orchestrator.md          # Wave scheduling + error escalation
 │   │   ├── memory-schema.md         # Memory file schemas
@@ -152,6 +155,8 @@ project/
     │   │   ├── phase-1-1-PLAN.md    # Plans
     │   │   └── wave-structure.md    # Wave dependencies
     │   └── ...
+    ├── archive/                     # Phase artifacts archive (v3.7)
+    │   └── phase-{N}/               # Plans, summaries, evidence
     └── logs/
         └── usage-log.md             # Lịch sử sử dụng framework
 ```
@@ -183,16 +188,19 @@ project/
 | `/design [N]` | Thiết kế | Phase có UI | 5 stages: MCP Check → Foundation → Screens → Components → Mockup (Pencil MCP bắt buộc) |
 | `/plan [N]` | Kế hoạch | Mỗi phase | Phân rã thành plans atomic, nhóm waves, định nghĩa tasks |
 | `/execute [N]` | Xây dựng | Sau plan | Thực thi từng task theo wave, atomic commits |
-| `/verify [N]` | Kiểm tra | Sau execute | Automated tests, gap analysis, cross-plan integration |
+| `/clarify [N]` | Làm rõ | Trước plan | Hỏi-đáp có cấu trúc, giảm rework (v3.6) |
+| `/verify [N]` | Kiểm tra | Sau execute | Functional verification, completeness audit, automated tests, gap analysis (v3.7) |
 | `/review [scope]` | Chất lượng | Sau verify | Security, performance, accessibility audit |
+| `/audit [scope]` | Toàn diện | Bất kỳ | Security + code quality + accessibility với risk scoring (v3.6) |
 | `/quick` | Ad-hoc | Bất kỳ | Bug fix, task nhỏ không cần full lifecycle |
 | `/progress` | Tiến độ | Bất kỳ | Xem vị trí hiện tại + guide |
 | `/guide` | Điều hướng | Tự động | Đề xuất 2-3 bước tiếp theo |
 | `/health` | Bảo trì | Định kỳ | Kiểm tra sức khỏe nội bộ framework |
-| `/start` | Phiên | Đầu phiên | Khôi phục context, kiểm tra MCP, hiện state |
+| `/start` | Phiên | Đầu phiên | Khôi phục context, kiểm tra MCP, usage log continuity check (v3.7) |
 | `/end` | Phiên | Cuối phiên | Lưu state, tạo handover, nhắc commit, auto-learn |
 | `/learn` | Học | Bất kỳ | Extract patterns từ usage-log vào reasoning-bank |
 | `/evolve` | Tiến hóa | Định kỳ | Cluster patterns → suggest amendments cho skills |
+| `/sync-knowledge` | Sync | Bất kỳ | Sync reasoning-bank + skill amendments về source framework (v3.5) |
 
 ### Workflow chi tiết
 
@@ -320,7 +328,7 @@ Docker compose → docker-containerization
 
 ---
 
-## 🔌 3 MCP tích hợp
+## 🔌 5 MCP tích hợp
 
 MCP (Model Context Protocol) mở rộng khả năng của AI bằng cách kết nối với external tools.
 
@@ -388,11 +396,33 @@ MCP (Model Context Protocol) mở rộng khả năng của AI bằng cách kết
 
 > **Bắt buộc cho `/design`**: Nếu Pencil không khả dụng → dừng workflow, thông báo user kiểm tra MCP. Không có fallback.
 
+### Stitch — AI Screen Generation (v3.4)
+
+| Khả năng | Tool | Mô tả |
+|----------|------|---------|
+| **Generate** | `generate_screen_from_text()` | Tạo screen từ text prompt |
+| **Edit** | `edit_screens()` | Sửa screens có sẵn |
+| **Design System** | `create/update_design_system()` | Quản lý design tokens |
+| **Variants** | `generate_variants()` | Tạo biến thể UI |
+| **Project** | `create/get/list_projects()` | Quản lý Stitch projects |
+
+> **Bắt buộc cho `/design`** (v3.4): 4-Proposal Multi-Engine yêu cầu Stitch tạo 1 trong 4 proposals.
+
+### ck — Semantic Code Search (v3.7)
+
+| Khả năng | Tool | Mô tả |
+|----------|------|---------|
+| **Semantic** | `semantic_search()` | Tìm code theo ý nghĩa, không chỉ keyword |
+| **Regex** | `regex_search()` | Pattern matching truyền thống |
+| **Hybrid** | `hybrid_search()` | Kết hợp semantic + regex với RRF ranking |
+
+> **Optional**: Hữu ích cho cross-plan integration check trong `/verify` — tìm breaking changes ngoài scope grep.
+
 ---
 
 ## 📋 Shared Protocols
 
-14 protocols dùng chung giữa tất cả agents (`_shared/`):
+13 protocols dùng chung giữa tất cả agents (`_shared/`):
 
 | Protocol | Mục đích |
 |----------|----------|
